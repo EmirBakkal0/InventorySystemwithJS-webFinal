@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueberry Factory Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer ></script>
+    <script src="FarmerManagement.js" defer ></script>
+
+</head>
+<body>
+    
+    <header>
+        <h1>Blueberry Factory Management System</h1>
+        <button onclick="router('farmer')">
+            Farmer Management
+        </button>
+        <button onclick="router('product')">
+            Product Categorization and Packaging
+        </button>
+        <button>Sales Management</button>
+        <button>Financial Analysis</button>
+        <button> Inventory Management</button>
+        <button>Report</button>
+    </header>
+
+
+
+    <main>
+        <section id="farmer">
+            <h2>Farmers Management</h2>
+            <div class="grid">
+                <form id="farmer-form">
+                <h3>Add farmer:</h3>
+                    <input type="number" id="farmer-id" placeholder="Farmer's ID" required>
+                    <input type="text" id="farmer-name" placeholder="Farmer's Name" required>
+                    <input type="number" id="farmer-phone" placeholder="Tel No" required>
+                    <input type="email" id="farmer-email" placeholder="Email" required>
+                    <input type="text" id="farmer-address" placeholder="City" required>
+                    <input type="text" id="farmer-region" placeholder="Region" required>
+                    <!--TODO: add type checking-->
+                    <button type="submit">Add Farmer</button>
+                </form>
+
+
+                <form id="updateFarmerForm">
+                <h3>Update Farmer:</h3>
+                    <label for="selectFarmer">Select Farmer to update</label>
+                    <select name="selectFarmer" id="selectFarmer" onchange="populateUpdateFields()" >
+                        <option id="nullOption" value="null">Choose one</option>
+                    </select>
+
+                    <input type="text" id="u-farmer-name" placeholder="Farmer's Name" required>
+                    <input type="number" id="u-farmer-phone" placeholder="Tel No" required>
+                    <input type="email" id="u-farmer-email" placeholder="Email" required>
+                    <input type="text" id="u-farmer-address" placeholder="City" required>
+                    <input type="text" id="u-farmer-region" placeholder="Region" required>
+                    <button type="submit">edit farmer</button>
+                </form>
+            </div>
+
+            <ul id="farmers-list">
+                <!-- Farmers will be displayed here -->
+            </ul>
+
+
+
+
+
+
+
+
+        </section>
+        <section id="product">Product</section>
+
+    </main>
+
+</body>
+</html>
