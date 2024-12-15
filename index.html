@@ -1,121 +1,414 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Blueberry Factory Management System</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer ></script>
-    <script src="FarmerManagement.js" defer ></script>
-
-</head>
-<body>
-    
+    <link href="style.css" rel="stylesheet" />
+    <script defer src="script.js"></script>
+    <script defer src="FarmerManagement.js"></script>
+    <script defer src="Sales.js"></script>
+  </head>
+  <body>
     <header>
-        <h1>Blueberry Factory Management System</h1>
-        <button onclick="router('farmer')">
-            Supplier Management
-        </button>
-        <button onclick="router('product')">
-            Product Categorization and Packaging
-        </button>
-        <button>Sales Management</button>
-        <button>Financial Analysis</button>
-        <button>Inventory Management</button>
-        <button>Report</button>
+      <h1>Blueberry Factory Management System</h1>
+      <button onclick="router('farmer')">Supplier Management</button>
+      <button onclick="router('product')">
+        Product Categorization and Packaging
+      </button>
+      <button onclick="router('sales')">Sales Management</button>
+      <button onclick="router('finance')">Financial Analysis</button>
+      <button onclick="router('inventory')">Inventory Management</button>
+      <button onclick="router('report')">Report</button>
     </header>
 
-
-
     <main>
-        <section id="farmer">
-            <h2>Farmers Management</h2>
-            <div class="grid">
-                <form id="farmer-form">
-                <h3>Add farmer:</h3>
-                    <input type="number" id="farmer-id" placeholder="Farmer's ID" required>
-                    <input type="text" id="farmer-name" placeholder="Farmer's Name" required>
-                    <input type="number" id="farmer-phone" placeholder="Tel No" required>
-                    <input type="email" id="farmer-email" placeholder="Email" required>
-                    <input type="text" id="farmer-address" placeholder="City" required>
-                    <input type="text" id="farmer-region" placeholder="Region" required>
-                    <!--TODO: add type checking-->
-                    <button type="submit">Add Farmer</button>
-                </form>
+      <section id="farmer">
+        <h2>Farmers Management</h2>
+        <div class="grid border">
+          <form id="farmer-form">
+            <h3>Add farmer:</h3>
+            <input
+              id="farmer-id"
+              placeholder="Farmer's ID"
+              required
+              type="number"
+            />
+            <input
+              id="farmer-name"
+              placeholder="Farmer's Name"
+              required
+              type="text"
+            />
+            <input
+              id="farmer-phone"
+              placeholder="Tel No"
+              required
+              type="number"
+            />
+            <input
+              id="farmer-email"
+              placeholder="Email"
+              required
+              type="email"
+            />
+            <input
+              id="farmer-address"
+              placeholder="City"
+              required
+              type="text"
+            />
+            <input
+              id="farmer-region"
+              placeholder="Region"
+              required
+              type="text"
+            />
+            <!--TODO: add type checking-->
+            <button type="submit">Add Farmer</button>
+          </form>
 
+          <form id="updateFarmerForm">
+            <h3>Update Farmer:</h3>
+            <label for="selectFarmer">Select Farmer to update</label>
+            <select
+              id="selectFarmer"
+              name="selectFarmer"
+              onchange="populateUpdateFields()"
+            >
+              <option id="nullOption" value="null">Choose one</option>
+            </select>
 
-                <form id="updateFarmerForm">
-                <h3>Update Farmer:</h3>
-                    <label for="selectFarmer">Select Farmer to update</label>
-                    <select name="selectFarmer" id="selectFarmer" onchange="populateUpdateFields()" >
-                        <option id="nullOption" value="null">Choose one</option>
-                    </select>
+            <input
+              id="u-farmer-name"
+              placeholder="Farmer's Name"
+              required
+              type="text"
+            />
+            <input
+              id="u-farmer-phone"
+              placeholder="Tel No"
+              required
+              type="number"
+            />
+            <input
+              id="u-farmer-email"
+              placeholder="Email"
+              required
+              type="email"
+            />
+            <input
+              id="u-farmer-address"
+              placeholder="City"
+              required
+              type="text"
+            />
+            <input
+              id="u-farmer-region"
+              placeholder="Region"
+              required
+              type="text"
+            />
+            <button type="submit">edit farmer</button>
+          </form>
 
-                    <input type="text" id="u-farmer-name" placeholder="Farmer's Name" required>
-                    <input type="number" id="u-farmer-phone" placeholder="Tel No" required>
-                    <input type="email" id="u-farmer-email" placeholder="Email" required>
-                    <input type="text" id="u-farmer-address" placeholder="City" required>
-                    <input type="text" id="u-farmer-region" placeholder="Region" required>
-                    <button type="submit">edit farmer</button>
-                </form>
+          <form id="searchFarmerForm">
+            <label for="farmerSearchByName">Search Farmer By Name</label>
+            <input
+              id="farmerSearchByName"
+              name="farmerSearch"
+              placeholder="Selahattin Kara"
+              type="text"
+            />
+            <button type="submit">Search farmer</button>
+          </form>
+          <form id="searchFarmerByCityForm">
+            <label for="farmerSearchByCity">Search Farmer By City</label>
+            <input
+              id="farmerSearchByCity"
+              name="farmerSearch"
+              placeholder="Muğla"
+              type="text"
+            />
+            <button type="submit">Search farmer</button>
+          </form>
+          <form id="searchFarmerByRegionForm">
+            <label for="farmerSearchByRegion">Search Farmer By Region</label>
+            <input
+              id="farmerSearchByRegion"
+              name="farmerSearch"
+              placeholder="Karadeniz"
+              type="text"
+            />
+            <button type="submit">Search farmer</button>
+          </form>
+          <button>Export Farmer Details</button>
+        </div>
 
-                <form id="searchFarmerForm">
-                    
-                    <label for="farmerSearchByName">Search Farmer By Name</label>
-                    <input type="text" id="farmerSearchByName" name="farmerSearch" placeholder="Selahattin Kara" />
-                    <button type="submit">Search farmer</button>
-                </form>
-                <form id="searchFarmerByCityForm">
-                    <label for="farmerSearchByCity">Search Farmer By City</label>
-                    <input type="text" id="farmerSearchByCity" name="farmerSearch" placeholder="Muğla" />
-                    <button type="submit">Search farmer</button>
+        <div class="grid border">
+          <form id="product-form">
+            <h3>Buy product</h3>
+            <input id="" name="" placeholder="Purchase ID" type="number" />
+            <select id="selectFarmerForProduct" name="selectFarmer">
+              <option id="nullOptionForProduct" value="null">
+                Choose Farmer
+              </option>
+            </select>
 
-                </form>
-                <form id="searchFarmerByRegionForm">
-                    <label for="farmerSearchByRegion">Search Farmer By Region</label>
-                    <input type="text" id="farmerSearchByRegion" name="farmerSearch" placeholder="Karadeniz" />
-                    <button type="submit">Search farmer</button>
+            <select id="" name="">
+              <option value="fresh">Fresh</option>
+              <option value="frozen">Frozen</option>
+              <option value="organic">Organic</option>
+            </select>
 
-                </form>
+            <input id="" name="" type="date" />
+            <input
+              id=""
+              name=""
+              placeholder="Quantity of product in kgs"
+              type="number"
+            />
+            <input id="" name="" placeholder="price per kg" type="number" />
 
-            </div>
+            <button type="submit">Buy Product</button>
+          </form>
+        </div>
+        <ul id="farmers-list">
+          <!-- Farmers will be displayed here -->
+        </ul>
+        <div class="table-container">
+          <table id="farmerTable">
+            <caption></caption>
 
-            <div class="grid">
-                <form id="product-form">
-                    <h3>Buy product</h3>
-                    <select name="selectFarmer" id="selectFarmerForProduct" >
-                        <option id="nullOptionForProduct" value="null">Choose one</option>
-                    </select>
-                    
-                    <button type="submit">Add Farmer</button>
-                </form>
+            <tbody>
+              <!-- js inserts stuff here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section id="product">
+        <h2>Product</h2>
+        <div class="grid">
+          <form>
+            <label for="categories">Choose category</label>
 
+            <select id="categories" name="categories">
+              <option value="sm">Small (100g)</option>
+              <option value="md">Medium (250g)</option>
+              <option value="lg">Large (500g)</option>
+              <option value="xl">Extra Large (1kg)</option>
+              <option value="fp">Family Pack (2kg)</option>
+              <option value="bp">Bulk Pack (5kg)</option>
+              <option value="pr">Premium (custom weight)</option>
+            </select>
+            <label for=""></label>
+            <input
+              disabled
+              id=""
+              min="0"
+              name=""
+              placeholder="gr"
+              type="number"
+            />
+            <label for="">Amount of berries to packet</label>
+            <input
+              id=""
+              min="0"
+              name=""
+              placeholder="Enter amount of berries to pack"
+              type="number"
+            />
+            <button type="submit">Package it</button>
+          </form>
 
-            </div>
-            <ul id="farmers-list">
-                <!-- Farmers will be displayed here -->
-            </ul>
-            <div class="table-container">
-                <table id="farmerTable">
-                    <caption></caption>
+          <form action="">
+            <label for="categoriesForPrice"> Set prices for categories </label>
+            <select id="categoriesForPrice" name="categories">
+              <option value="sm">Small (100g)</option>
+              <option value="md">Medium (250g)</option>
+              <option value="lg">Large (500g)</option>
+              <option value="xl">Extra Large (1kg)</option>
+              <option value="fp">Family Pack (2kg)</option>
+              <option value="bp">Bulk Pack (5kg)</option>
+              <option value="pr">Premium (custom weight)</option>
+            </select>
+            <label for="">Set/Update Price</label>
+            <input id="" min="0" name="" type="number" />
+            <button type="submit">Set Price</button>
+          </form>
+        </div>
 
-                    <tbody >
-                        <!-- js inserts stuff here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="grid">
+          <table>
+            <caption>
+              Category Prices
+            </caption>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>cat 1</th>
+                <th>200$</th>
+              </tr>
+            </tbody>
+          </table>
 
+          <table>
+            <caption>
+              Inventory Tracking
+            </caption>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Stock Level</th>
+                <th>Info</th>
+              </tr>
+            </thead>
 
+            <tbody>
+              <tr>
+                <th>Small</th>
+                <th>100</th>
+                <th>STOCKS ARE LOW!</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section id="sales">
+        <form id="order-form">
+          <label for="order-id">Order ID:</label>
+          <input id="order-id" name="order-id" required type="text" />
+          <label for="customer-name">Customer Name:</label>
+          <input id="customer-name" name="customer-name" required type="text" />
+          <label for="customer-contact">Customer Contact:</label>
+          <input
+            id="customer-contact"
+            name="customer-contact"
+            required
+            type="text"
+          />
+          <label for="customer-shipping">Shipping Information:</label>
+          <input
+            id="customer-shipping"
+            name="customer-shipping"
+            required
+            type="text"
+          />
+          <label for="product-category">Product Category:</label>
+          <select id="product-category" name="product-category" required>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="extra-large">Extra Large</option>
+            <option value="family-pack">Family Pack</option>
+            <option value="bulk-pack">Bulk Pack</option>
+            <option value="premium">Premium</option>
+          </select>
+          <label for="quantity-ordered">Quantity Ordered:</label>
+          <input
+            id="quantity-ordered"
+            name="quantity-ordered"
+            required
+            type="number"
+          />
+          <label for="unit-price">Total Price:</label>
 
+          <input id="unit-price" name="unit-price" required type="number" />
+          <label for="order-status">Order Status:</label>
+          <select id="order-status" name="order-status" required>
+            <option value="pending">Pending</option>
+            <option value="processed">Processed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+          </select>
+          <button type="submit">Add Order</button>
+        </form>
+        <table id="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Contact</th>
+              <th>Shipping Info</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Total Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Order entries will go here -->
+          </tbody>
+        </table>
 
+        <div id="sales-report">
+          <h2>Sales Report</h2>
+          <div id="report-container">
+            <!-- Sales report will be generated here -->
+          </div>
+        </div>
+      </section>
+      <section id="finance"></section>
+      <section id="inventory">
+        <h2>Inventory Management</h2>
+        <form id="inventory-form">
+          <label for="item-id">Item ID:</label>
+          <input type="text" id="item-id" name="item-id" required />
+          <label for="category">Category:</label>
+          <input type="text" id="category" name="category" required />
+          <label for="quantity">Quantity Available:</label>
+          <input type="number" id="quantity" name="quantity" required />
+          <label for="reorder-level">Reorder Level:</label>
+          <input
+            type="number"
+            id="reorder-level"
+            name="reorder-level"
+            required
+          />
+          <label for="restock-date">Restock Date:</label>
+          <input type="date" id="restock-date" name="restock-date" />
+          <label for="storage-location">Storage Location:</label>
+          <input
+            type="text"
+            id="storage-location"
+            name="storage-location"
+            required
+          />
+          <button type="submit">Add Item</button>
+        </form>
+        <table id="inventory-table">
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Reorder Level</th>
+              <th>Restock Date</th>
+              <th>Storage Location</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Inventory items will go here -->
+          </tbody>
+        </table>
+        <div id="alerts">
+          <h2>Alerts and Notifications</h2>
+          <div id="alerts-container"><!-- Alerts will be generated here --></div>
+        </div>
+        <div id="reportt">
+          <h2>Inventory Report</h2>
+          <div id="report-container"><!-- Reports will be generated here --></div>
+        </div>
+      </section>
 
-
-
-        </section>
-        <section id="product">Product</section>
-
+      <section id="report"></section>
     </main>
-
-</body>
+  </body>
 </html>

@@ -91,3 +91,14 @@ li {
 li span {
     flex: 1;
 }
+
+.border{
+    border: 2px solid red;
+}
+
+tbody, th, td, thead{
+    border: 2px solid darkgray;
+    border-collapse: collapse;
+    padding: 4px;
+    /* Style the table elements */
+}
