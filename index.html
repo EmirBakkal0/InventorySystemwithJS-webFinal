@@ -15,14 +15,14 @@
     <header>
         <h1>Blueberry Factory Management System</h1>
         <button onclick="router('farmer')">
-            Farmer Management
+            Supplier Management
         </button>
         <button onclick="router('product')">
             Product Categorization and Packaging
         </button>
         <button>Sales Management</button>
         <button>Financial Analysis</button>
-        <button> Inventory Management</button>
+        <button>Inventory Management</button>
         <button>Report</button>
     </header>
 
@@ -59,12 +59,52 @@
                     <input type="text" id="u-farmer-region" placeholder="Region" required>
                     <button type="submit">edit farmer</button>
                 </form>
+
+                <form id="searchFarmerForm">
+                    
+                    <label for="farmerSearchByName">Search Farmer By Name</label>
+                    <input type="text" id="farmerSearchByName" name="farmerSearch" placeholder="Selahattin Kara" />
+                    <button type="submit">Search farmer</button>
+                </form>
+                <form id="searchFarmerByCityForm">
+                    <label for="farmerSearchByCity">Search Farmer By City</label>
+                    <input type="text" id="farmerSearchByCity" name="farmerSearch" placeholder="Muğla" />
+                    <button type="submit">Search farmer</button>
+
+                </form>
+                <form id="searchFarmerByRegionForm">
+                    <label for="farmerSearchByRegion">Search Farmer By Region</label>
+                    <input type="text" id="farmerSearchByRegion" name="farmerSearch" placeholder="Karadeniz" />
+                    <button type="submit">Search farmer</button>
+
+                </form>
+
             </div>
 
+            <div class="grid">
+                <form id="product-form">
+                    <h3>Buy product</h3>
+                    <select name="selectFarmer" id="selectFarmerForProduct" >
+                        <option id="nullOptionForProduct" value="null">Choose one</option>
+                    </select>
+                    
+                    <button type="submit">Add Farmer</button>
+                </form>
+
+
+            </div>
             <ul id="farmers-list">
                 <!-- Farmers will be displayed here -->
             </ul>
+            <div class="table-container">
+                <table id="farmerTable">
+                    <caption></caption>
 
+                    <tbody >
+                        <!-- js inserts stuff here -->
+                    </tbody>
+                </table>
+            </div>
 
 
 

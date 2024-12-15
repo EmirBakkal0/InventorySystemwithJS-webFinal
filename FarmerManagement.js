@@ -125,6 +125,42 @@ document.querySelector("#updateFarmerForm").addEventListener("submit", (e) =>{
 })
 
 
+function searchFarmer(event,searchType){
+    event.preventDefault()
+    let farmerResult=[]
+    if (searchType==="name"){
+        const searchedName=document.getElementById("farmerSearchByName").value
+        farmerResult=farmers.filter((farmer) => farmer.fName.toLowerCase().includes( searchedName.toLowerCase()))
+
+    }
+    else if (searchType==="city"){
+        const searchedName=document.getElementById("farmerSearchByCity").value
+        farmerResult=farmers.filter((farmer) => farmer.fAddress.toLowerCase().includes( searchedName.toLowerCase()))
+
+    }
+    else if (searchType==="region"){
+        const searchedName=document.getElementById("farmerSearchByRegion").value
+        farmerResult=farmers.filter((farmer) => farmer.fRegion.toLowerCase().includes( searchedName.toLowerCase()))
+
+    }
+    farmersList.innerHTML = "";
+    farmerResult.forEach((farmer, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span> ${farmer.fID}  ${farmer.fName} - ${farmer.fPhone} ${farmer.fEmail} (${farmer.fAddress})(${farmer.fRegion})</span>
+            <button onclick="deleteFarmer(${index})">Delete</button>
+        `;
+        farmersList.appendChild(li);
+    });
+
+
+
+}
+
+document.querySelector("#searchFarmerForm").addEventListener("submit",e =>  searchFarmer(e,"name") )
+document.querySelector("#searchFarmerByCityForm").addEventListener("submit",e =>  searchFarmer(e,"city") )
+document.querySelector("#searchFarmerByRegionForm").addEventListener("submit",e =>  searchFarmer(e,"region") )
+
 
 
 // Initial display
