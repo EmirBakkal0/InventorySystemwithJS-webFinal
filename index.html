@@ -185,6 +185,17 @@
 
             <button type="submit">Buy Product</button>
           </form>
+
+          <form id="expenseCalc" action="">
+            <h3>Calculate Expense </h3>
+
+            <label for="start-date">Start Date</label>
+            <input type="date" name="start-date" id="start-date" required>
+            <label for="start-date">Ending Date</label>
+            <input type="date" name="end-date" id="end-date" required>
+            <button type="submit">Calculate Total Expenses</button>
+          </form>
+
         </div>
         <ul id="farmers-list">
           <!-- Farmers will be displayed here -->
@@ -227,6 +238,9 @@
             </tbody>
           </table>
         </div>
+
+        <p>Total expenses between <span id="expenseText"></span></p>
+
       </section>
       <section id="product">
         <h2>Product</h2>

@@ -268,6 +268,37 @@ function displayPurchaseLogs(){
 
 }
 
+function isDateBetween(startDate, endDate, checkDate) {
+    // Convert to Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const check = new Date(checkDate);
+
+    // Compare dates
+    return check >= start && check <= end;
+}
+
+
+
+
+document.querySelector("#expenseCalc").addEventListener("submit", (e)  => {
+    e.preventDefault()
+
+
+    const [startDate,endDate] = Array.from(document.querySelectorAll("#expenseCalc input")).map(input => input.value);
+    console.log(startDate,endDate)
+
+    const productsBetweenDates=purchases.filter(purchase => isDateBetween(startDate,endDate,purchase.pDate)  )
+    let totalCost=0
+    productsBetweenDates.forEach(product => {
+        totalCost+=product.calcTotalCost()
+    })
+
+    document.querySelector("#expenseText").innerHTML=`${startDate} and ${endDate} is ${totalCost}`
+
+
+});
+
 const exportFarmersToCSV = () => {
 
     if (farmers.length === 0) {
@@ -315,7 +346,11 @@ const exportFarmersToCSV = () => {
     };
 
     // export btn
-    document.querySelector("#exportFarmerBtn").addEventListener("click", exportFarmersToCSV);
+document.querySelector("#exportFarmerBtn").addEventListener("click", exportFarmersToCSV);
+
+
+
+
 // Initial display
 displayFarmers();
 displayPurchaseLogs();
