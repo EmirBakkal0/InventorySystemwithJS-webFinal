@@ -6,13 +6,14 @@ const farmerForm = document.getElementById("farmer-form");
 
 
 class Farmer{
-    constructor(fID,fName,phone,email,address,region) {
+    constructor(fID,fName,phone,email,address,region,purchases) {
         this.fID=fID
         this.fName=fName
         this.fPhone=phone
         this.fEmail=email
         this.fAddress=address
         this.fRegion=region
+        this.purchases=purchases
 
     }
 
@@ -24,13 +25,39 @@ class Farmer{
         this.fRegion=region
     }
 
+    addPurchase(purchase){
+        this.purchases.push(purchase)
+    }
+
 }
+
+class Purchase{
+    constructor(pID,pFarmerID,pDate,pAmount,pPricePerAmount ){
+        this.pID=pID
+        this.pFarmerID=pFarmerID
+        this.pDate=pDate
+        this.pAmount=pAmount
+        this.pPricePerAmount=pPricePerAmount
+    }
+    calcTotalCost(){
+        return this.pAmount  * this.pPricePerAmount
+    }
+}
+
+    const purchasesJson=JSON.parse( localStorage.getItem("purchases")) ?? []
 const farmersJson= JSON.parse( localStorage.getItem("farmers")) ?? []
 // get farmers from local storage if exists or create empty array
 
 // map the farmers from local storage to farmer Class objs
-const farmers= farmersJson.map((farmer) => new Farmer(farmer.fID,farmer.fName,farmer.fPhone,farmer.fEmail,farmer.fAddress,farmer.fRegion))
+const farmers= farmersJson.map((farmer) => new Farmer(farmer.fID,farmer.fName,farmer.fPhone,farmer.fEmail,farmer.fAddress,farmer.fRegion,farmer.purchases))
+const purchases= purchasesJson.map((p) => new Purchase(p.pID,p.pFarmerID,p.pDate,p.pAmount,p.pPricePerAmount ) )
 
+function findPurchaseByPID(id){
+    purchases.find((p) => p.pID=== id)
+}
+function findPurchaseByFarmerID(id){
+    purchases.find((p) => p.pFarmerID=== id)
+}
 
 function findFarmerByID(id){
     return farmers.find((farmer) => farmer.fID===id)
@@ -40,16 +67,31 @@ function findFarmerByID(id){
 
 // Function to display farmers
 function displayFarmers() {
-    farmersList.innerHTML = "";
-    farmers.forEach((farmer, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <span> ${farmer.fID}  ${farmer.fName} - ${farmer.fPhone} ${farmer.fEmail} (${farmer.fAddress})(${farmer.fRegion})</span>
-            <button onclick="deleteFarmer(${index})">Delete</button>
-        `;
-        farmersList.appendChild(li);
-    });
+    // const tablehead=document.querySelector()
+    const tableBody=document.querySelector("#farmerTable tbody")
+
+    tableBody.innerHTML = ""
+
+    farmers.forEach((farmer,index) =>{
+        const row=document.createElement("tr");
+        row.innerHTML= `
+      
+      <td>${farmer.fID}</td>
+      <td>${farmer.fName}</td>
+      <td>${farmer.fPhone}</td>
+      <td>${farmer.fEmail}</td>
+      <td>${farmer.fAddress}</td>
+      <td>${farmer.fRegion}</td>
+      <td> <button onClick="deleteFarmer(${index})">Delete</button> </td>
+            
+      
+      `;
+        tableBody.appendChild(row);
+
+    })
+
     populateSelection()
+    populateFarmerSelectionForProduct()
 }
 
 // Add farmer
@@ -63,7 +105,7 @@ farmerForm.addEventListener("submit", (e) => {
     const address= document.getElementById("farmer-address").value;
     const region = document.getElementById("farmer-region").value;
 
-    farmers.push(new Farmer(id,name,phone,email,address,region))
+    farmers.push(new Farmer(id,name,phone,email,address,region,[]))
     localStorage.setItem("farmers", JSON.stringify(farmers));
     farmerForm.reset();
     displayFarmers();
@@ -80,6 +122,15 @@ window.deleteFarmer = (index) => {
 function populateSelection(){
     const selectFarmer=document.querySelector("#selectFarmer")
     selectFarmer.innerHTML="<option id=\"nullOption\" value=\"null\">Choose one</option>"
+    farmers.forEach(farmer => {
+        const option = `<option value="${farmer.fID}">${farmer.fName}</option>`;
+        selectFarmer.innerHTML += option;
+
+    });
+}
+function populateFarmerSelectionForProduct(){
+    const selectFarmer=document.querySelector("#selectFarmerForProduct")
+    selectFarmer.innerHTML=""//<option id=\"nullOptionForProduct\" value=\"null\">Choose one</option>"
     farmers.forEach(farmer => {
         const option = `<option value="${farmer.fID}">${farmer.fName}</option>`;
         selectFarmer.innerHTML += option;
@@ -143,15 +194,28 @@ function searchFarmer(event,searchType){
         farmerResult=farmers.filter((farmer) => farmer.fRegion.toLowerCase().includes( searchedName.toLowerCase()))
 
     }
-    farmersList.innerHTML = "";
-    farmerResult.forEach((farmer, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <span> ${farmer.fID}  ${farmer.fName} - ${farmer.fPhone} ${farmer.fEmail} (${farmer.fAddress})(${farmer.fRegion})</span>
-            <button onclick="deleteFarmer(${index})">Delete</button>
-        `;
-        farmersList.appendChild(li);
-    });
+    const tableBody=document.querySelector("#farmerTable tbody")
+
+    tableBody.innerHTML = ""
+
+    farmerResult.forEach((farmer,index) =>{
+        const row=document.createElement("tr");
+        row.innerHTML= `
+      
+      <td>${farmer.fID}</td>
+      <td>${farmer.fName}</td>
+      <td>${farmer.fPhone}</td>
+      <td>${farmer.fEmail}</td>
+      <td>${farmer.fAddress}</td>
+      <td>${farmer.fRegion}</td>
+      <td> <button onClick="deleteFarmer(${index})">Delete</button> </td>
+            
+      
+      `;
+        tableBody.appendChild(row);
+
+    })
+
 
 
 
@@ -163,5 +227,96 @@ document.querySelector("#searchFarmerByRegionForm").addEventListener("submit",e 
 
 
 
+
+
+document.querySelector("#product-form").addEventListener("submit",(e) =>{
+    e.preventDefault();
+    const pFarmerID = document.querySelector("#product-form select").value
+    const [pID, pDate, pAmount, pPricePerAmount] = Array.from(document.querySelectorAll("#product-form input")).map(input => input.value);
+    console.log(pFarmerID)
+    const farmer=findFarmerByID(pFarmerID)
+    farmer.addPurchase(pID)
+    purchases.push(new Purchase(pID,pFarmerID,pDate,pAmount,pPricePerAmount))
+
+    localStorage.setItem("purchases", JSON.stringify(purchases));
+    // farmerForm.reset();
+    displayPurchaseLogs();
+
+
+})
+
+function displayPurchaseLogs(){
+    const table=document.querySelector("#purchasesFromFarmerTable tbody")
+    table.innerHTML=""
+    purchases.forEach((purchase,index) =>{
+        const row=document.createElement("tr");
+        row.innerHTML= `
+      
+      <td>${purchase.pID}</td>
+      <td>${findFarmerByID(purchase.pFarmerID).fName}</td>
+      <td>${purchase.pDate}</td>
+      <td>${purchase.pAmount}</td>
+      <td>${purchase.pPricePerAmount}</td>
+      <td>${purchase.calcTotalCost()}</td>
+        
+            
+      
+      `;
+        table.appendChild(row);
+
+    })
+
+}
+
+const exportFarmersToCSV = () => {
+
+    if (farmers.length === 0) {
+        alert("There are no farmers to export!");
+        return;
+    }
+
+    // CSV headings
+    const headers = [
+        "Farmer ID",
+        "Name",
+        "Phone",
+        "Email",
+        "City",
+        "Region",
+
+    ];
+
+    // CSV content
+    const csvContent = [
+        headers.join(","), // Başlık satırı
+        ...farmers.map((farmer) =>
+            [
+                farmer.fID,
+                farmer.fName,
+                farmer.fPhone,
+                farmer.fEmail,
+                farmer.fAddress,
+                farmer.fRegion,
+            ].join(",")
+        ),
+            ].join("\n");
+
+        // CSV create file
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        // Download
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "farmers_data.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // export btn
+    document.querySelector("#exportFarmerBtn").addEventListener("click", exportFarmersToCSV);
 // Initial display
 displayFarmers();
+displayPurchaseLogs();
+

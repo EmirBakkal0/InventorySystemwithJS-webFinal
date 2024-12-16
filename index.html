@@ -3,23 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Blueberry Factory Management System</title>
+    <title>Beyaban Mersini Management System</title>
     <link href="style.css" rel="stylesheet" />
     <script defer src="script.js"></script>
     <script defer src="FarmerManagement.js"></script>
     <script defer src="Sales.js"></script>
+    <script defer src="Product.js"></script>
   </head>
   <body>
     <header>
-      <h1>Blueberry Factory Management System</h1>
-      <button onclick="router('farmer')">Supplier Management</button>
-      <button onclick="router('product')">
-        Product Categorization and Packaging
-      </button>
-      <button onclick="router('sales')">Sales Management</button>
-      <button onclick="router('finance')">Financial Analysis</button>
-      <button onclick="router('inventory')">Inventory Management</button>
-      <button onclick="router('report')">Report</button>
+      <a href="index.html" class="factory-logo">
+        <img src="assets/logo.png" alt="Logo" width="50px" />
+        <h3>NavyBerry Management System</h3>
+      </a>
+      <div>
+        <button onclick="router('farmer')">Supplier Management</button>
+        <button onclick="router('product')">
+          Product Categorization and Packaging
+        </button>
+        <button onclick="router('sales')">Sales Management</button>
+        <button onclick="router('finance')">Financial Analysis</button>
+        <button onclick="router('inventory')">Inventory Management</button>
+        <button onclick="router('report')">Report</button>
+
+      </div>
     </header>
 
     <main>
@@ -142,33 +149,39 @@
             />
             <button type="submit">Search farmer</button>
           </form>
-          <button>Export Farmer Details</button>
+          <button id="exportFarmerBtn">Export Farmer Details</button>
         </div>
 
         <div class="grid border">
           <form id="product-form">
             <h3>Buy product</h3>
-            <input id="" name="" placeholder="Purchase ID" type="number" />
-            <select id="selectFarmerForProduct" name="selectFarmer">
+            <label for="pID">Purchase ID</label>
+            <input id="pID" name="" placeholder="Purchase ID" type="number" min="0" required />
+            <label for="selectFarmerForProduct">Select Farmer from dropdown</label>
+            <select id="selectFarmerForProduct" name="selectFarmer" required>
               <option id="nullOptionForProduct" value="null">
                 Choose Farmer
               </option>
             </select>
 
-            <select id="" name="">
-              <option value="fresh">Fresh</option>
-              <option value="frozen">Frozen</option>
-              <option value="organic">Organic</option>
-            </select>
-
-            <input id="" name="" type="date" />
+<!--            <select id="" name="">-->
+<!--              <option value="fresh">Fresh</option>-->
+<!--              <option value="frozen">Frozen</option>-->
+<!--              <option value="organic">Organic</option>-->
+<!--            </select>-->
+            <label for="pDate">Select Date of purchase</label>
+            <input id="pDate" name="" type="date" required />
+            <label for="pQuantity">Enter the amount of products</label>
             <input
-              id=""
+              id="pQuantity"
               name=""
               placeholder="Quantity of product in kgs"
               type="number"
+              required
+              min=0
             />
-            <input id="" name="" placeholder="price per kg" type="number" />
+            <label for="pPrice">Enter price per kilogram</label>
+            <input id="pPrice" name="" placeholder="30" type="number" required min="0"/>
 
             <button type="submit">Buy Product</button>
           </form>
@@ -178,18 +191,50 @@
         </ul>
         <div class="table-container">
           <table id="farmerTable">
-            <caption></caption>
-
+            <caption>Farmers </caption>
+            <thead>
+            <tr>
+              <th>Farmer ID</th>
+              <th>Farmer Name </th>
+              <th>Farmer Cellphone</th>
+              <th>Farmer Email</th>
+              <th>Farmer City</th>
+              <th>Farmer Region</th>
+              <th>Farmer Actions</th>
+            </tr>
+            </thead>
             <tbody>
               <!-- js inserts stuff here -->
+            </tbody>
+          </table>
+        </div>
+        <div class="table-container">
+          <table id="purchasesFromFarmerTable">
+            <caption>Purchase Logs </caption>
+            <thead>
+            <tr>
+              <th>Purchase ID</th>
+              <th>Purchased From </th>
+              <th>Date of purchase</th>
+              <th>Purchased Amount</th>
+              <th>Price per KG</th>
+              <th>Total Price</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <!-- js inserts stuff here -->
             </tbody>
           </table>
         </div>
       </section>
       <section id="product">
         <h2>Product</h2>
+        <h3>Available Blueberry Amount: <span id="nonCatAmount"> b</span> </h3>
         <div class="grid">
+
           <form>
+
             <label for="categories">Choose category</label>
 
             <select id="categories" name="categories">

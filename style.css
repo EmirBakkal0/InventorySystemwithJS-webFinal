@@ -2,12 +2,22 @@ section{
     display: none;
 }
 
+
 .visible{
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
+.factory-logo{
+    display: flex;
+    color:white;
+    font-style: oblique;
+    text-decoration: none;
+    align-items: center;
+}
+
 
 body {
     font-family: Arial, sans-serif;
@@ -17,10 +27,13 @@ body {
 }
 
 header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     background-color: #067c0a;
     color: white;
-    text-align: center;
-    padding: 1em 0;
+    text-align: left;
+    padding: 1rem 1rem;
 }
 
 .grid{
