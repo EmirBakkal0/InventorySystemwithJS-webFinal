@@ -92,6 +92,7 @@ function displayFarmers() {
 
     populateSelection()
     populateFarmerSelectionForProduct()
+    populateFarmerSelectionForPurchase()
 }
 
 // Add farmer
@@ -130,6 +131,14 @@ function populateSelection(){
 }
 function populateFarmerSelectionForProduct(){
     const selectFarmer=document.querySelector("#selectFarmerForProduct")
+    selectFarmer.innerHTML=""//<option id=\"nullOptionForProduct\" value=\"null\">Choose one</option>"
+    farmers.forEach(farmer => {
+        const option = `<option value="${farmer.fID}">${farmer.fName}</option>`;
+        selectFarmer.innerHTML += option;
+
+    });
+}function populateFarmerSelectionForPurchase(){
+    const selectFarmer=document.querySelector("#selectFarmerForPurchase")
     selectFarmer.innerHTML=""//<option id=\"nullOptionForProduct\" value=\"null\">Choose one</option>"
     farmers.forEach(farmer => {
         const option = `<option value="${farmer.fID}">${farmer.fName}</option>`;
@@ -233,7 +242,6 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
     e.preventDefault();
     const pFarmerID = document.querySelector("#product-form select").value
     const [pID, pDate, pAmount, pPricePerAmount] = Array.from(document.querySelectorAll("#product-form input")).map(input => input.value);
-    console.log(pFarmerID)
     const farmer=findFarmerByID(pFarmerID)
     farmer.addPurchase(pID)
     purchases.push(new Purchase(pID,pFarmerID,pDate,pAmount,pPricePerAmount))
@@ -286,7 +294,6 @@ document.querySelector("#expenseCalc").addEventListener("submit", (e)  => {
 
 
     const [startDate,endDate] = Array.from(document.querySelectorAll("#expenseCalc input")).map(input => input.value);
-    console.log(startDate,endDate)
 
     const productsBetweenDates=purchases.filter(purchase => isDateBetween(startDate,endDate,purchase.pDate)  )
     let totalCost=0
@@ -298,6 +305,52 @@ document.querySelector("#expenseCalc").addEventListener("submit", (e)  => {
 
 
 });
+
+document.querySelector("#listPurchasesByDateForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const [startDate,endDate] = Array.from(document.querySelectorAll("#listPurchasesByDateForm input")).map(input => input.value);
+    const purchasesBetweenDates=purchases.filter(purchase => isDateBetween(startDate,endDate,purchase.pDate)  )
+    const table=document.querySelector("#purchasesFromFarmerTable tbody")
+    table.innerHTML=""
+    purchasesBetweenDates.forEach(purchase => {
+        const row=document.createElement("tr");
+        row.innerHTML= `
+      <td>${purchase.pID}</td>
+      <td>${findFarmerByID(purchase.pFarmerID).fName}</td>
+      <td>${purchase.pDate}</td>
+      <td>${purchase.pAmount}</td>
+      <td>${purchase.pPricePerAmount}</td>
+      <td>${purchase.calcTotalCost()}</td>
+      `;
+        table.appendChild(row);
+
+    })
+
+})
+
+document.querySelector("#listPurchasesByFarmer").addEventListener("submit", e =>{
+    e.preventDefault()
+    const option= document.querySelector("#selectFarmerForPurchase").value
+
+    const table=document.querySelector("#purchasesFromFarmerTable tbody")
+    table.innerHTML=""
+    const filtered=purchases.filter(purchase => purchase.pFarmerID === option)
+
+    filtered.forEach(purchase => {
+        const row=document.createElement("tr");
+        row.innerHTML= `
+      <td>${purchase.pID}</td>
+      <td>${findFarmerByID(purchase.pFarmerID).fName}</td>
+      <td>${purchase.pDate}</td>
+      <td>${purchase.pAmount}</td>
+      <td>${purchase.pPricePerAmount}</td>
+      <td>${purchase.calcTotalCost()}</td>
+      `;
+        table.appendChild(row);
+
+    })
+
+})
 
 const exportFarmersToCSV = () => {
 

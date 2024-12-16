@@ -32,8 +32,27 @@
     <main>
       <section id="farmer">
         <h2>Farmers Management</h2>
-        <div class="grid border">
-          <form id="farmer-form">
+        <nav>
+          <div>
+            <button onclick="show('farmer-form')">Add Farmer</button>
+            <button onclick="show('updateFarmerForm')">Update Farmer</button>
+            <button id="exportFarmerBtn">Export Farmer Details to csv</button>
+          </div>
+          <div>
+            <button onclick="show('searchFarmerForm')">Search Farmer by Name</button>
+            <button onclick="show('searchFarmerByCityForm')"> Search Farmer by City</button>
+            <button onclick="show('searchFarmerByRegionForm')">Search Farmer by Region</button>
+          </div>
+          <div>
+            <button onclick="show('product-form')">Buy Product</button>
+            <button onclick="show('listPurchasesByDateForm')">List purchase logs by time</button>
+            <button onclick="show('listPurchasesByFarmer')">List purchase logs by farmer</button>
+            <button onclick="show('expenseCalc')"> Calculate Expense</button>
+
+          </div>
+
+        </nav>
+        <form id="farmer-form">
             <h3>Add farmer:</h3>
             <input
               id="farmer-id"
@@ -149,10 +168,7 @@
             />
             <button type="submit">Search farmer</button>
           </form>
-          <button id="exportFarmerBtn">Export Farmer Details</button>
-        </div>
 
-        <div class="grid border">
           <form id="product-form">
             <h3>Buy product</h3>
             <label for="pID">Purchase ID</label>
@@ -196,10 +212,30 @@
             <button type="submit">Calculate Total Expenses</button>
           </form>
 
-        </div>
-        <ul id="farmers-list">
-          <!-- Farmers will be displayed here -->
-        </ul>
+          <form id="listPurchasesByDateForm">
+            <h3>List purchase logs by time periods</h3>
+            <label for="start-date">Start Date</label>
+            <input type="date" name="start-date" id="start-date-f" required>
+            <label for="start-date">Ending Date</label>
+            <input type="date" name="end-date" id="end-date-f" required>
+            <button type="submit">List purchase logs by date</button>
+
+          </form>
+
+          <form id="listPurchasesByFarmer">
+            <h3>List purchase logs by farmer</h3>
+            <label for="selectFarmerForPurchase">
+              Choose farmer
+            </label><select name="" id="selectFarmerForPurchase">
+              <option id="nullOptionForPurchase " value="null">
+                Choose Farmer
+              </option>
+            </select>
+            <button type="submit">List purchase logs by farmer</button>
+          </form>
+
+
+
         <div class="table-container">
           <table id="farmerTable">
             <caption>Farmers </caption>

@@ -1,6 +1,4 @@
-section{
-    display: none;
-}
+
 
 
 .visible{
@@ -9,6 +7,13 @@ section{
     align-items: center;
     justify-content: center;
 }
+
+nav div{
+    display: flex;
+    justify-content: center;
+}
+
+
 
 .factory-logo{
     display: flex;
@@ -28,46 +33,45 @@ body {
 
 header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    background-color: #067c0a;
+    background-color: navy;
     color: white;
     text-align: left;
     padding: 1rem 1rem;
 }
 
 .grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
-    column-gap: 20px;
+
 }
 
 main {
-    padding: 20px;
 }
 
 section {
+    display: none;
     background: white;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 15px;
 
-    margin-bottom: 20px;
-   
+
 }
-.visible{
-    display: flex;
-}
+
 
 h2 {
     margin-top: 0;
 }
 
 form {
-    display: flex;
+
+    display: none;
     flex-direction: column;
     gap: 10px;
 }
+
+
 
 input, button {
     padding: 10px;
@@ -105,8 +109,14 @@ li span {
     flex: 1;
 }
 
-.border{
-    border: 2px solid red;
+
+
+.table-container{
+    max-width: 100svw;
+    overflow: auto;
+    margin-top: 12px;
+    margin: 0.5rem;
+    /* Style the table container */
 }
 
 tbody, th, td, thead{
