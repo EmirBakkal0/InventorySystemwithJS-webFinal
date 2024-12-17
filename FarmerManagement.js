@@ -251,7 +251,7 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
 
     localStorage.setItem("purchases", JSON.stringify(purchases));
-    // farmerForm.reset();
+    farmerForm.reset();
     displayPurchaseLogs();
 
 

@@ -1,3 +1,22 @@
+
+const money=JSON.parse( localStorage.getItem("money")) ?? {amount:0}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.getElementById('order-form').addEventListener('submit', function(event) {
     event.preventDefault();
 

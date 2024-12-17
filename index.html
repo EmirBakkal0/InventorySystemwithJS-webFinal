@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Beyaban Mersini Management System</title>
+    <title>NavyBerry Management System</title>
     <link href="style.css" rel="stylesheet" />
     <script defer src="script.js"></script>
     <script defer src="FarmerManagement.js"></script>
@@ -344,7 +344,7 @@
         <form id="lowStockAlert">
           <h3>Set alerts for categories</h3>
           <label for="categoriesForAlert"> Choose a category </label>
-          <select id="categoriesForAlert" name="categories" onchange="">
+          <select id="categoriesForAlert" name="categories" onchange="handleAlertField()">
             <option value="Small">Small (100g)</option>
             <option value="Medium">Medium (250g)</option>
             <option value="Large">Large (500g)</option>
@@ -390,6 +390,7 @@
               <tr>
                 <th>Category</th>
                 <th>Stock Level</th>
+                <th>Total Kilos</th>
                 <th>Info</th>
               </tr>
             </thead>
@@ -398,6 +399,7 @@
               <tr>
                 <th>Small</th>
                 <th>100</th>
+                <th>10</th>
                 <th>STOCKS ARE LOW!</th>
               </tr>
             </tbody>

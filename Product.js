@@ -125,6 +125,7 @@ function listInventoryTracking(){
         row.innerHTML=`
             <th>${category.cName}</th>
             <th>${category.amount}</th>
+            <th>${category.amount*category.kg} </th>
             <th>${alertStock(category.amount,category.lowStockAlert)}</th>
            `
         table.appendChild(row)
@@ -142,7 +143,7 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
     const category=inventory.find(cat => cat.cName===categoryName)
 
     nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount)
-    category.amount= Number.parseFloat(category.amount)  +( Number.parseFloat(amount)*Number.parseFloat(category.kg))
+    category.amount= Number.parseFloat(category.amount) +Number.parseFloat(amount)
 
     localStorage.setItem("inventory",JSON.stringify(inventory))
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
@@ -168,9 +169,21 @@ document.querySelector("#lowStockAlert").addEventListener("submit",e =>{
     const categoryName=document.querySelector("#categoriesForAlert").value
     const category=inventory.find(cat => cat.cName===categoryName)
     const lowStockAmount=document.querySelector("#alertAmount").value
+    console.log(lowStockAmount)
     category.lowStockAlert=Number.parseFloat(lowStockAmount)
+    console.log(category.lowStockAlert)
 
+    localStorage.setItem("inventory",JSON.stringify(inventory))
+
+    listInventoryTracking()
 })
+
+function handleAlertField(){
+    const categoryName=document.getElementById("categoriesForAlert").value
+    const category=inventory.find(cat => cat.cName===categoryName)
+
+    document.getElementById("alertAmount").value=category.lowStockAlert
+}
 
 function alertStock(amount,threshold){
     amount=Number.parseFloat(amount)
@@ -183,7 +196,7 @@ function alertStock(amount,threshold){
     }
 }
 
-
+handleAlertField()
 handlePriceField()
 listCategoryPrices()
 listInventoryTracking()
