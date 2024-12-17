@@ -212,6 +212,8 @@
             <label for="start-date">Ending Date</label>
             <input type="date" name="end-date" id="end-date" required>
             <button type="submit">Calculate Total Expenses</button>
+            <p>Total expenses between <span id="expenseText"></span></p>
+
           </form>
 
           <form id="listPurchasesByDateForm">
@@ -277,7 +279,6 @@
           </table>
         </div>
 
-        <p>Total expenses between <span id="expenseText"></span></p>
 
       </section>
 
@@ -411,16 +412,19 @@
 
       <section id="sales">
         <form id="order-form">
+          <h3>Sell product to Customers</h3>
           <label for="order-id">Order ID:</label>
           <input id="order-id" name="order-id" required type="text" />
           <label for="customer-name">Customer Name:</label>
           <input id="customer-name" name="customer-name" required type="text" />
-          <label for="customer-contact">Customer Contact:</label>
+          <label for="customer-contact">Customer Telephone:</label>
           <input
             id="customer-contact"
             name="customer-contact"
+            min="0"
+            minlength="10"
             required
-            type="text"
+            type="number"
           />
           <label for="customer-shipping">Shipping Information:</label>
           <input
@@ -431,13 +435,13 @@
           />
           <label for="product-category">Product Category:</label>
           <select id="product-category" name="product-category" required>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra Large</option>
-            <option value="family-pack">Family Pack</option>
-            <option value="bulk-pack">Bulk Pack</option>
-            <option value="premium">Premium</option>
+            <option value="Small">Small (100g)</option>
+            <option value="Medium">Medium (250g)</option>
+            <option value="Large">Large (500g)</option>
+            <option value="Extra Large">Extra Large (1kg)</option>
+            <option value="Family Pack">Family Pack (2kg)</option>
+            <option value="Bulk Pack">Bulk Pack (5kg)</option>
+            <option value="Premium">Premium (custom weight)</option>
           </select>
           <label for="quantity-ordered">Quantity Ordered:</label>
           <input
@@ -458,6 +462,15 @@
           </select>
           <button type="submit">Add Order</button>
         </form>
+
+
+        <form id="editSaleForm">
+
+
+        </form>
+
+
+
         <table id="orders-table">
           <thead>
             <tr>

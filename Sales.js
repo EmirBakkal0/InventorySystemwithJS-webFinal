@@ -1,19 +1,19 @@
 
-const money=JSON.parse( localStorage.getItem("money")) ?? {amount:0}
+const money=JSON.parse( localStorage.getItem("money")) ?? {amount:10000}
+
+document.getElementById("money").innerHTML=money.amount
 
 
+class Sale{
+    constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus }) {
+        Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus });
+    }
+}
 
 
+const salesJson= JSON.parse(localStorage.getItem("sales")) ?? []
 
-
-
-
-
-
-
-
-
-
+const sales= salesJson.map(sale => new Sale(sale))
 
 
 
@@ -21,6 +21,10 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     event.preventDefault();
 
     const orderId = document.getElementById('order-id').value;
+    if (sales.find((sale) => sale.sID === orderId) ){ // if the crs already exists
+        alert("There's already a sale with the same ID..")
+        return
+    }
     const customerName = document.getElementById('customer-name').value;
     const customerContact = document.getElementById('customer-contact').value;
     const customerShipping = document.getElementById('customer-shipping').value;
@@ -30,32 +34,57 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     const orderStatus = document.getElementById('order-status').value;
     const totalPrice = quantityOrdered * unitPrice;
 
-    const table = document.getElementById('orders-table').getElementsByTagName('tbody')[0];
-    const newRow = table.insertRow();
+    const sale= {
+        sID:orderId,
+        cName: customerName,
+        cContact: customerContact,
+        cShipping: customerShipping,
+        pCategory: productCategory,
+        pQuantity: quantityOrdered,
+        pPrice: unitPrice,
+        sStatus: orderStatus,
+    }
+    sales.push(new Sale(sale))
+    localStorage.setItem("sales",JSON.stringify(sales))
+    money.amount+= totalPrice
+    document.getElementById("money").innerHTML=money.amount
+    localStorage.setItem("money",JSON.stringify(money))
 
-    const cell1 = newRow.insertCell(0);
-    const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2);
-    const cell4 = newRow.insertCell(3);
-    const cell5 = newRow.insertCell(4);
-    const cell6 = newRow.insertCell(5);
-    const cell7 = newRow.insertCell(6);
-    const cell8 = newRow.insertCell(7);
-    const cell9 = newRow.insertCell(8);
+    displaySalesTable()
 
-    cell1.textContent = orderId;
-    cell2.textContent = customerName;
-    cell3.textContent = customerContact;
-    cell4.textContent = customerShipping;
-    cell5.textContent = productCategory;
-    cell6.textContent = quantityOrdered;
-    cell7.textContent = unitPrice;
-    cell8.textContent = totalPrice;
-    cell9.textContent = orderStatus;
-
-    document.getElementById('order-form').reset();
-    generateReport();
 });
+
+
+function displaySalesTable(){
+    const table = document.querySelector("#orders-table tbody")
+
+    sales.forEach(sale => {
+        const newRow = table.insertRow();
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+        const cell5 = newRow.insertCell(4);
+        const cell6 = newRow.insertCell(5);
+        const cell7 = newRow.insertCell(6);
+        const cell8 = newRow.insertCell(7);
+        const cell9 = newRow.insertCell(8);
+
+        cell1.textContent = sale.sID;
+        cell2.textContent = sale.cName;
+        cell3.textContent = sale.cContact;
+        cell4.textContent = sale.cShipping;
+        cell5.textContent = sale.pCategory;
+        cell6.textContent = sale.pQuantity;
+        cell7.textContent = sale.pPrice;
+        cell8.textContent = sale.pPrice*sale.pQuantity;
+        cell9.textContent = sale.sStatus;
+
+    })
+
+    //generateReport();
+}
 
 function generateReport() {
     const table = document.getElementById('orders-table').getElementsByTagName('tbody')[0];
@@ -86,3 +115,5 @@ function generateReport() {
         </ul>
     `;
 }
+
+displaySalesTable()

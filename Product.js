@@ -8,9 +8,6 @@ class Category{
         this.lowStockAlert=alert
     }
 
-
-
-
 }
 const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:100}
 
@@ -72,10 +69,6 @@ const inventory=inventoryJSON.map((c) => new Category(c.kg,c.amount, c.price, c.
 
 
 
-
-
-
-
 function listCategoryPrices(){
     const table=document.querySelector("#categoryPriceTable tbody")
     table.innerHTML=""
@@ -108,7 +101,6 @@ function handleCategory(){
     }
 
 }
-
 
 function handlePriceField(){
     const categoryName=document.getElementById("categoriesForPrice").value

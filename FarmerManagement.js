@@ -1,9 +1,6 @@
 const farmerForm = document.getElementById("farmer-form");
 
 
-
-
-
 class Farmer{
     constructor(fID,fName,phone,email,address,region,purchases) {
         this.fID=fID
@@ -98,7 +95,10 @@ function displayFarmers() {
 farmerForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const id = document.getElementById("farmer-id").value;
-
+    if (farmers.find((farmer) => Number.parseInt(farmer.fID) === Number.parseInt(id)) ){ // if the crs already exists
+        alert("There's already a farmer with the same ID..")
+        return
+    }
     const name = document.getElementById("farmer-name").value;
     const phone = document.getElementById("farmer-phone").value;
     const email = document.getElementById("farmer-email").value;
@@ -241,7 +241,19 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
     e.preventDefault();
     const pFarmerID = document.querySelector("#product-form select").value
     const [pID, pDate, pAmount, pPricePerAmount] = Array.from(document.querySelectorAll("#product-form input")).map(input => input.value);
+    if (purchases.find((p) => Number.parseInt(p.pID) === Number.parseInt(pID)) ){ // if the crs already exists
+        alert("There's already a sale with the same ID..")
+        return
+    }
     const farmer=findFarmerByID(pFarmerID)
+    const totalCost=Number.parseFloat(pAmount)* Number.parseFloat(pPricePerAmount)
+    if (money.amount < totalCost){
+        alert("You don't have enough money..")
+        return
+    }
+    money.amount = Number.parseFloat(money.amount)-totalCost
+    document.getElementById("money").innerHTML=money.amount
+
     farmer.addPurchase(pID)
     purchases.push(new Purchase(pID,pFarmerID,pDate,pAmount,pPricePerAmount))
 
@@ -249,7 +261,7 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
 
     document.querySelector("#nonCatAmount").innerHTML=nonCategorizedBerryAmount.total
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
-
+    localStorage.setItem("money",JSON.stringify(money))
     localStorage.setItem("purchases", JSON.stringify(purchases));
     farmerForm.reset();
     displayPurchaseLogs();
