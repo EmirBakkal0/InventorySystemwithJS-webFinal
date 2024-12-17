@@ -1,4 +1,3 @@
-const farmersList = document.getElementById("farmers-list");
 const farmerForm = document.getElementById("farmer-form");
 
 
@@ -44,7 +43,7 @@ class Purchase{
     }
 }
 
-    const purchasesJson=JSON.parse( localStorage.getItem("purchases")) ?? []
+const purchasesJson=JSON.parse( localStorage.getItem("purchases")) ?? []
 const farmersJson= JSON.parse( localStorage.getItem("farmers")) ?? []
 // get farmers from local storage if exists or create empty array
 
@@ -245,6 +244,11 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
     const farmer=findFarmerByID(pFarmerID)
     farmer.addPurchase(pID)
     purchases.push(new Purchase(pID,pFarmerID,pDate,pAmount,pPricePerAmount))
+
+    nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) + Number.parseFloat(pAmount)
+
+    document.querySelector("#nonCatAmount").innerHTML=nonCategorizedBerryAmount.total
+    localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
 
     localStorage.setItem("purchases", JSON.stringify(purchases));
     // farmerForm.reset();

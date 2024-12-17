@@ -30,6 +30,8 @@
     </header>
 
     <main>
+      <h3>Available non-categorized Blueberry Amount: <span id="nonCatAmount">js not loaded</span> kg</h3>
+      <h3>Money <span id="money">(!! js not loaded i guess !!)</span> $</h3>
       <section id="farmer">
         <h2>Farmers Management</h2>
         <nav>
@@ -278,36 +280,41 @@
         <p>Total expenses between <span id="expenseText"></span></p>
 
       </section>
+
+
       <section id="product">
         <h2>Product</h2>
-        <h3>Available Blueberry Amount: <span id="nonCatAmount"> b</span> </h3>
-        <div class="grid">
 
-          <form>
 
-            <label for="categories">Choose category</label>
+          <form id="packageForm">
+            <h3>Package products</h3>
+            <label for="packageCategories">Choose category</label>
 
-            <select id="categories" name="categories">
-              <option value="sm">Small (100g)</option>
-              <option value="md">Medium (250g)</option>
-              <option value="lg">Large (500g)</option>
-              <option value="xl">Extra Large (1kg)</option>
-              <option value="fp">Family Pack (2kg)</option>
-              <option value="bp">Bulk Pack (5kg)</option>
-              <option value="pr">Premium (custom weight)</option>
+            <select id="packageCategories" name="categories" onchange="handleCategory()">
+              <option value="Small">Small (100g)</option>
+              <option value="Medium">Medium (250g)</option>
+              <option value="Large">Large (500g)</option>
+              <option value="Extra Large">Extra Large (1kg)</option>
+              <option value="Family Pack">Family Pack (2kg)</option>
+              <option value="Bulk Pack">Bulk Pack (5kg)</option>
+              <option value="Premium">Premium (custom weight)</option>
             </select>
-            <label for=""></label>
+
+
+            <div id="premiumWeightInput" class="hidden">
+
+              <label for="premiumWeight"> Set amount for premium</label>
+              <input
+
+                id="premiumWeight"
+                min="0"
+                placeholder="kg"
+                type="number"
+              />
+            </div>
+            <label for="packageBerryAmount">Amount of berries to packet</label>
             <input
-              disabled
-              id=""
-              min="0"
-              name=""
-              placeholder="gr"
-              type="number"
-            />
-            <label for="">Amount of berries to packet</label>
-            <input
-              id=""
+              id="packageBerryAmount"
               min="0"
               name=""
               placeholder="Enter amount of berries to pack"
@@ -316,25 +323,48 @@
             <button type="submit">Package it</button>
           </form>
 
-          <form action="">
-            <label for="categoriesForPrice"> Set prices for categories </label>
-            <select id="categoriesForPrice" name="categories">
-              <option value="sm">Small (100g)</option>
-              <option value="md">Medium (250g)</option>
-              <option value="lg">Large (500g)</option>
-              <option value="xl">Extra Large (1kg)</option>
-              <option value="fp">Family Pack (2kg)</option>
-              <option value="bp">Bulk Pack (5kg)</option>
-              <option value="pr">Premium (custom weight)</option>
+          <form id="categoryPriceForm">
+            <h3>Set prices for categories</h3>
+            <label for="categoriesForPrice"> Choose a category </label>
+            <select id="categoriesForPrice" name="categories" onchange="handlePriceField()">
+              <option value="Small">Small (100g)</option>
+              <option value="Medium">Medium (250g)</option>
+              <option value="Large">Large (500g)</option>
+              <option value="Extra Large">Extra Large (1kg)</option>
+              <option value="Family Pack">Family Pack (2kg)</option>
+              <option value="Bulk Pack">Bulk Pack (5kg)</option>
+              <option value="Premium">Premium (custom weight)</option>
             </select>
-            <label for="">Set/Update Price</label>
-            <input id="" min="0" name="" type="number" />
+            <label for="categoryPrice">Set/Update Price</label>
+            <input id="categoryPrice" min="0" name="" type="number" />
             <button type="submit">Set Price</button>
           </form>
-        </div>
 
-        <div class="grid">
-          <table>
+
+        <form id="lowStockAlert">
+          <h3>Set alerts for categories</h3>
+          <label for="categoriesForAlert"> Choose a category </label>
+          <select id="categoriesForAlert" name="categories" onchange="">
+            <option value="Small">Small (100g)</option>
+            <option value="Medium">Medium (250g)</option>
+            <option value="Large">Large (500g)</option>
+            <option value="Extra Large">Extra Large (1kg)</option>
+            <option value="Family Pack">Family Pack (2kg)</option>
+            <option value="Bulk Pack">Bulk Pack (5kg)</option>
+            <option value="Premium">Premium (custom weight)</option>
+
+         </select>
+          <label for="alertAmount">Set/Update Alert</label>
+          <input id="alertAmount" min="0" name="" type="number" />
+          <button type="submit">Set Alert</button>
+
+        </form>
+
+
+
+
+
+          <table id="categoryPriceTable">
             <caption>
               Category Prices
             </caption>
@@ -352,7 +382,7 @@
             </tbody>
           </table>
 
-          <table>
+          <table id="inventoryTrackingTable">
             <caption>
               Inventory Tracking
             </caption>
@@ -372,8 +402,11 @@
               </tr>
             </tbody>
           </table>
-        </div>
+
       </section>
+
+
+
       <section id="sales">
         <form id="order-form">
           <label for="order-id">Order ID:</label>

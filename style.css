@@ -7,13 +7,19 @@
     align-items: center;
     justify-content: center;
 }
+.hidden{
+    display: none;
+}
 
 nav div{
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
-
+#product form , #sales form {
+    display: flex;
+}
 
 .factory-logo{
     display: flex;
