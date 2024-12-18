@@ -17,9 +17,7 @@ nav div{
     justify-content: center;
 }
 
-#product form , #sales form {
-    display: flex;
-}
+
 
 .factory-logo{
     display: flex;
@@ -120,7 +118,6 @@ li span {
 .table-container{
     max-width: 100svw;
     overflow: auto;
-    margin-top: 12px;
     margin: 0.5rem;
     /* Style the table container */
 }

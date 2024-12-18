@@ -34,6 +34,13 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     const orderStatus = document.getElementById('order-status').value;
     const totalPrice = quantityOrdered * unitPrice;
 
+    const category=inventory.find(cat => cat.cName===productCategory)
+    console.log(category)
+    if(quantityOrdered > category.amount){
+        alert("There is not enough product in the inventory..")
+        return
+    }
+
     const sale= {
         sID:orderId,
         cName: customerName,
@@ -47,6 +54,10 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     sales.push(new Sale(sale))
     localStorage.setItem("sales",JSON.stringify(sales))
     money.amount+= totalPrice
+    category.amount= Number.parseFloat(category.amount) - quantityOrdered ;
+    localStorage.setItem("inventory",JSON.stringify(inventory))
+    listInventoryTracking()
+
     document.getElementById("money").innerHTML=money.amount
     localStorage.setItem("money",JSON.stringify(money))
 
@@ -57,7 +68,7 @@ document.getElementById('order-form').addEventListener('submit', function(event)
 
 function displaySalesTable(){
     const table = document.querySelector("#orders-table tbody")
-
+    table.innerHTML=""
     sales.forEach(sale => {
         const newRow = table.insertRow();
 
@@ -84,6 +95,115 @@ function displaySalesTable(){
     })
 
     //generateReport();
+}
+
+function displaySalesTableByStatus(){
+    const status=document.getElementById("l-order-status").value
+
+    if (status!=="all"){
+
+        const table = document.querySelector("#orders-table tbody")
+        table.innerHTML=""
+
+        sales.filter(sale => sale.sStatus === status).forEach(sale =>{
+            const newRow = table.insertRow();
+
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+            const cell6 = newRow.insertCell(5);
+            const cell7 = newRow.insertCell(6);
+            const cell8 = newRow.insertCell(7);
+            const cell9 = newRow.insertCell(8);
+
+            cell1.textContent = sale.sID;
+            cell2.textContent = sale.cName;
+            cell3.textContent = sale.cContact;
+            cell4.textContent = sale.cShipping;
+            cell5.textContent = sale.pCategory;
+            cell6.textContent = sale.pQuantity;
+            cell7.textContent = sale.pPrice;
+            cell8.textContent = sale.pPrice*sale.pQuantity;
+            cell9.textContent = sale.sStatus;
+
+        })
+    }
+    else {
+        displaySalesTable()
+    }
+}
+
+function displaySalesTableByCategory(){
+    const category = document.getElementById("l-product-category").value
+    if (category !== "all"){
+        const table = document.querySelector("#orders-table tbody")
+        table.innerHTML=""
+
+        sales.filter(sale => sale.pCategory === category).forEach(sale => {
+            const newRow = table.insertRow();
+
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+            const cell6 = newRow.insertCell(5);
+            const cell7 = newRow.insertCell(6);
+            const cell8 = newRow.insertCell(7);
+            const cell9 = newRow.insertCell(8);
+
+            cell1.textContent = sale.sID;
+            cell2.textContent = sale.cName;
+            cell3.textContent = sale.cContact;
+            cell4.textContent = sale.cShipping;
+            cell5.textContent = sale.pCategory;
+            cell6.textContent = sale.pQuantity;
+            cell7.textContent = sale.pPrice;
+            cell8.textContent = sale.pPrice * sale.pQuantity;
+            cell9.textContent = sale.sStatus;
+        })
+
+    }
+    else{
+        displaySalesTable()
+    }
+}
+
+document.getElementById("listByCustomer").addEventListener("submit", e =>{
+    e.preventDefault() // this whole ordeal is here because otherwise when you press enter while searching a customer name
+    // the page will reload
+})
+function displaySalesTableByCustomer(){
+    const name= document.getElementById("l-customer-name").value
+    const table = document.querySelector("#orders-table tbody")
+    table.innerHTML=""
+    sales.filter(sale => sale.cName.toLowerCase().includes(name.toLowerCase()) ).forEach( sale => {
+        const newRow = table.insertRow();
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+        const cell5 = newRow.insertCell(4);
+        const cell6 = newRow.insertCell(5);
+        const cell7 = newRow.insertCell(6);
+        const cell8 = newRow.insertCell(7);
+        const cell9 = newRow.insertCell(8);
+
+        cell1.textContent = sale.sID;
+        cell2.textContent = sale.cName;
+        cell3.textContent = sale.cContact;
+        cell4.textContent = sale.cShipping;
+        cell5.textContent = sale.pCategory;
+        cell6.textContent = sale.pQuantity;
+        cell7.textContent = sale.pPrice;
+        cell8.textContent = sale.pPrice * sale.pQuantity;
+        cell9.textContent = sale.sStatus;
+    })
+
+
 }
 
 function generateReport() {
@@ -115,5 +235,42 @@ function generateReport() {
         </ul>
     `;
 }
+
+function handleEditField(){
+    const sID=document.querySelector("#e-order-id").value
+    const sale=sales.find(sale => sale.sID=== sID)
+    if (!sale){
+        document.getElementById("e-customer-name").value=""
+        document.getElementById("e-customer-contact").value=""
+        document.getElementById("e-customer-shipping").value=""
+        document.getElementById("e-order-status").value=""
+    }
+    document.getElementById("e-customer-name").value=sale.cName
+    document.getElementById("e-customer-contact").value=sale.cContact
+    document.getElementById("e-customer-shipping").value=sale.cShipping
+    document.getElementById("e-order-status").value=sale.sStatus
+}
+
+
+document.querySelector("#editSaleForm").addEventListener("submit", e =>{
+    e.preventDefault()
+    const saleID= document.getElementById("e-order-id").value
+    console.log(saleID)
+    const customerName = document.getElementById('e-customer-name').value;
+    const customerContact = document.getElementById('e-customer-contact').value;
+    const customerShipping = document.getElementById('e-customer-shipping').value;
+    const orderStatus = document.getElementById('e-order-status').value;
+
+    const sale = sales.find(sale => sale.sID===saleID)
+
+    sale.cName=customerName
+    sale.cContact=customerContact
+    sale.cShipping=customerShipping
+    sale.sStatus=orderStatus
+
+
+    localStorage.setItem("sales",JSON.stringify(sales))
+    displaySalesTable()
+})
 
 displaySalesTable()

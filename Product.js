@@ -133,7 +133,10 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
     const amount=document.getElementById("packageBerryAmount").value
 
     const category=inventory.find(cat => cat.cName===categoryName)
-
+    if (Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount) < 0 ){
+        alert("You don't have enough berries to package that much..")
+        return
+    }
     nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount)
     category.amount= Number.parseFloat(category.amount) +Number.parseFloat(amount)
 

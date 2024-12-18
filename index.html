@@ -284,7 +284,13 @@
 
 
       <section id="product">
-        <h2>Product</h2>
+
+        <h2>Products</h2>
+        <nav>
+          <button onclick="show('packageForm')">Package Products</button>
+          <button onclick="show('categoryPriceForm')">Set prices for categories</button>
+          <button onclick="show('lowStockAlert')">Set alerts for categories</button>
+        </nav>
 
 
           <form id="packageForm">
@@ -411,10 +417,19 @@
 
 
       <section id="sales">
+        <h2>Sales Management</h2>
+        <nav>
+          <button onclick="show('order-form')">Sell product to customers</button>
+          <button onclick="show('editSaleForm')">Edit Sale</button>
+          <button onclick="show('listByStatus')">List Sales by status</button>
+          <button onclick="show('listByCategory')">List Sales by category</button>
+          <button onclick="show('listByCustomer')">List Sales by Customer</button>
+
+        </nav>
         <form id="order-form">
           <h3>Sell product to Customers</h3>
           <label for="order-id">Order ID:</label>
-          <input id="order-id" name="order-id" required type="text" />
+          <input id="order-id" name="order-id" required type="number" />
           <label for="customer-name">Customer Name:</label>
           <input id="customer-name" name="customer-name" required type="text" />
           <label for="customer-contact">Customer Telephone:</label>
@@ -450,7 +465,7 @@
             required
             type="number"
           />
-          <label for="unit-price">Total Price:</label>
+          <label for="unit-price">Price per category:</label>
 
           <input id="unit-price" name="unit-price" required type="number" />
           <label for="order-status">Order Status:</label>
@@ -465,11 +480,93 @@
 
 
         <form id="editSaleForm">
+          <h3>Edit Sale</h3>
+          <label for="e-order-id">Enter Order ID to update:</label>
+          <input id="e-order-id" name="order-id" required type="number" onchange="handleEditField()"/>
+          <label for="e-customer-name">Customer Name:</label>
+          <input id="e-customer-name" name="customer-name" required type="text" />
+          <label for="e-customer-contact">Customer Telephone:</label>
+          <input
+                  id="e-customer-contact"
+                  name="customer-contact"
+                  min="0"
+                  minlength="10"
+                  required
+                  type="number"
+          />
+          <label for="e-customer-shipping">Shipping Information:</label>
+          <input
+                  id="e-customer-shipping"
+                  name="customer-shipping"
+                  required
+                  type="text"
+          />
+          <!--<label for="e-product-category">Product Category:</label>
+          <select id="e-product-category" name="product-category" required>
+            <option value="Small">Small (100g)</option>
+            <option value="Medium">Medium (250g)</option>
+            <option value="Large">Large (500g)</option>
+            <option value="Extra Large">Extra Large (1kg)</option>
+            <option value="Family Pack">Family Pack (2kg)</option>
+            <option value="Bulk Pack">Bulk Pack (5kg)</option>
+            <option value="Premium">Premium (custom weight)</option>
+          </select>
+          <label for="e-quantity-ordered">Quantity Ordered:</label>
+          <input
+                  id="e-quantity-ordered"
+                  name="quantity-ordered"
+                  required
+                  type="number"
+          />
+          <label for="e-unit-price">Price per category:</label>
 
+          <input id="e-unit-price" name="unit-price" required type="number" />-->
+
+          <label for="e-order-status">Order Status:</label>
+          <select id="e-order-status" name="order-status" required>
+            <option value="pending">Pending</option>
+            <option value="processed">Processed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+          </select>
+          <button type="submit">Edit Order</button>
 
         </form>
 
+        <form id="listByStatus" >
+          <h3>List orders by status</h3>
+          <label for="l-order-status">Order Status:</label>
 
+          <select id="l-order-status" name="order-status" required onchange="displaySalesTableByStatus()">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="processed">Processed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+          </select>
+        </form>
+
+        <form id="listByCategory" >
+          <h3>List orders by Category</h3>
+          <label for="l-product-category">Product Category:</label>
+          <select id="l-product-category" name="product-category" required onchange="displaySalesTableByCategory()">
+            <option value="all">All</option>
+            <option value="Small">Small (100g)</option>
+            <option value="Medium">Medium (250g)</option>
+            <option value="Large">Large (500g)</option>
+            <option value="Extra Large">Extra Large (1kg)</option>
+            <option value="Family Pack">Family Pack (2kg)</option>
+            <option value="Bulk Pack">Bulk Pack (5kg)</option>
+            <option value="Premium">Premium (custom weight)</option>
+          </select>
+
+        </form>
+
+        <form id="listByCustomer" >
+          <h3>List orders by Customer</h3>
+          <label for="l-customer-name">Customer Name:</label>
+          <input id="l-customer-name" name="customer-name" required type="text" onchange="displaySalesTableByCustomer() "/>
+        </form>
 
         <table id="orders-table">
           <thead>
