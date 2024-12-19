@@ -5,8 +5,8 @@ document.getElementById("money").innerHTML=money.amount
 
 
 class Sale{
-    constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus }) {
-        Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus });
+    constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate }) {
+        Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate });
     }
 }
 
@@ -34,6 +34,8 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     const orderStatus = document.getElementById('order-status').value;
     const totalPrice = quantityOrdered * unitPrice;
 
+    const saleDate=document.getElementById("order-date").value;
+
     const category=inventory.find(cat => cat.cName===productCategory)
     console.log(category)
     if(quantityOrdered > category.amount){
@@ -50,6 +52,7 @@ document.getElementById('order-form').addEventListener('submit', function(event)
         pQuantity: quantityOrdered,
         pPrice: unitPrice,
         sStatus: orderStatus,
+        sDate: saleDate
     }
     sales.push(new Sale(sale))
     localStorage.setItem("sales",JSON.stringify(sales))
@@ -65,34 +68,38 @@ document.getElementById('order-form').addEventListener('submit', function(event)
 
 });
 
+function renderSalesTable(table,sale) {
+
+    const newRow = table.insertRow();
+
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+    const cell4 = newRow.insertCell(3);
+    const cell5 = newRow.insertCell(4);
+    const cell6 = newRow.insertCell(5);
+    const cell7 = newRow.insertCell(6);
+    const cell8 = newRow.insertCell(7);
+    const cell9 = newRow.insertCell(8);
+    const cell10 = newRow.insertCell(9);
+
+    cell1.textContent = sale.sID;
+    cell2.textContent = sale.sDate;
+    cell3.textContent = sale.cName;
+    cell4.textContent = sale.cContact;
+    cell5.textContent = sale.cShipping;
+    cell6.textContent = sale.pCategory;
+    cell7.textContent = sale.pQuantity;
+    cell8.textContent = sale.pPrice;
+    cell9.textContent = sale.pPrice * sale.pQuantity;
+    cell10.textContent = sale.sStatus;
+
+}
 
 function displaySalesTable(){
     const table = document.querySelector("#orders-table tbody")
     table.innerHTML=""
-    sales.forEach(sale => {
-        const newRow = table.insertRow();
-
-        const cell1 = newRow.insertCell(0);
-        const cell2 = newRow.insertCell(1);
-        const cell3 = newRow.insertCell(2);
-        const cell4 = newRow.insertCell(3);
-        const cell5 = newRow.insertCell(4);
-        const cell6 = newRow.insertCell(5);
-        const cell7 = newRow.insertCell(6);
-        const cell8 = newRow.insertCell(7);
-        const cell9 = newRow.insertCell(8);
-
-        cell1.textContent = sale.sID;
-        cell2.textContent = sale.cName;
-        cell3.textContent = sale.cContact;
-        cell4.textContent = sale.cShipping;
-        cell5.textContent = sale.pCategory;
-        cell6.textContent = sale.pQuantity;
-        cell7.textContent = sale.pPrice;
-        cell8.textContent = sale.pPrice*sale.pQuantity;
-        cell9.textContent = sale.sStatus;
-
-    })
+    sales.forEach(sale => renderSalesTable(table,sale))
 
     //generateReport();
 }
@@ -105,35 +112,14 @@ function displaySalesTableByStatus(){
         const table = document.querySelector("#orders-table tbody")
         table.innerHTML=""
 
-        sales.filter(sale => sale.sStatus === status).forEach(sale =>{
-            const newRow = table.insertRow();
-
-            const cell1 = newRow.insertCell(0);
-            const cell2 = newRow.insertCell(1);
-            const cell3 = newRow.insertCell(2);
-            const cell4 = newRow.insertCell(3);
-            const cell5 = newRow.insertCell(4);
-            const cell6 = newRow.insertCell(5);
-            const cell7 = newRow.insertCell(6);
-            const cell8 = newRow.insertCell(7);
-            const cell9 = newRow.insertCell(8);
-
-            cell1.textContent = sale.sID;
-            cell2.textContent = sale.cName;
-            cell3.textContent = sale.cContact;
-            cell4.textContent = sale.cShipping;
-            cell5.textContent = sale.pCategory;
-            cell6.textContent = sale.pQuantity;
-            cell7.textContent = sale.pPrice;
-            cell8.textContent = sale.pPrice*sale.pQuantity;
-            cell9.textContent = sale.sStatus;
-
-        })
+        sales.filter(sale => sale.sStatus === status).forEach(sale => renderSalesTable(table,sale))
     }
     else {
         displaySalesTable()
     }
 }
+
+
 
 function displaySalesTableByCategory(){
     const category = document.getElementById("l-product-category").value
@@ -141,29 +127,7 @@ function displaySalesTableByCategory(){
         const table = document.querySelector("#orders-table tbody")
         table.innerHTML=""
 
-        sales.filter(sale => sale.pCategory === category).forEach(sale => {
-            const newRow = table.insertRow();
-
-            const cell1 = newRow.insertCell(0);
-            const cell2 = newRow.insertCell(1);
-            const cell3 = newRow.insertCell(2);
-            const cell4 = newRow.insertCell(3);
-            const cell5 = newRow.insertCell(4);
-            const cell6 = newRow.insertCell(5);
-            const cell7 = newRow.insertCell(6);
-            const cell8 = newRow.insertCell(7);
-            const cell9 = newRow.insertCell(8);
-
-            cell1.textContent = sale.sID;
-            cell2.textContent = sale.cName;
-            cell3.textContent = sale.cContact;
-            cell4.textContent = sale.cShipping;
-            cell5.textContent = sale.pCategory;
-            cell6.textContent = sale.pQuantity;
-            cell7.textContent = sale.pPrice;
-            cell8.textContent = sale.pPrice * sale.pQuantity;
-            cell9.textContent = sale.sStatus;
-        })
+        sales.filter(sale => sale.pCategory === category).forEach(sale => renderSalesTable(table,sale) )
 
     }
     else{
@@ -179,29 +143,7 @@ function displaySalesTableByCustomer(){
     const name= document.getElementById("l-customer-name").value
     const table = document.querySelector("#orders-table tbody")
     table.innerHTML=""
-    sales.filter(sale => sale.cName.toLowerCase().includes(name.toLowerCase()) ).forEach( sale => {
-        const newRow = table.insertRow();
-
-        const cell1 = newRow.insertCell(0);
-        const cell2 = newRow.insertCell(1);
-        const cell3 = newRow.insertCell(2);
-        const cell4 = newRow.insertCell(3);
-        const cell5 = newRow.insertCell(4);
-        const cell6 = newRow.insertCell(5);
-        const cell7 = newRow.insertCell(6);
-        const cell8 = newRow.insertCell(7);
-        const cell9 = newRow.insertCell(8);
-
-        cell1.textContent = sale.sID;
-        cell2.textContent = sale.cName;
-        cell3.textContent = sale.cContact;
-        cell4.textContent = sale.cShipping;
-        cell5.textContent = sale.pCategory;
-        cell6.textContent = sale.pQuantity;
-        cell7.textContent = sale.pPrice;
-        cell8.textContent = sale.pPrice * sale.pQuantity;
-        cell9.textContent = sale.sStatus;
-    })
+    sales.filter(sale => sale.cName.toLowerCase().includes(name.toLowerCase()) ).forEach( sale => renderSalesTable(table,sale))
 
 
 }

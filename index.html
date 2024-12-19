@@ -199,7 +199,7 @@
               min=0
             />
             <label for="pPrice">Enter price per kilogram</label>
-            <input id="pPrice" name="" placeholder="30" type="number" required min="0"/>
+            <input id="pPrice" name="" placeholder="30" type="number" required min="1"/>
 
             <button type="submit">Buy Product</button>
           </form>
@@ -319,6 +319,10 @@
                 type="number"
               />
             </div>
+
+            <label for="packageDate">Enter date of packaging:</label>
+            <input type="date" name="" id="packageDate">
+
             <label for="packageBerryAmount">Amount of berries to packet</label>
             <input
               id="packageBerryAmount"
@@ -430,6 +434,8 @@
           <h3>Sell product to Customers</h3>
           <label for="order-id">Order ID:</label>
           <input id="order-id" name="order-id" required type="number" />
+          <label for="order-date">Enter date of sale:</label>
+          <input type="date" name="" id="order-date">
           <label for="customer-name">Customer Name:</label>
           <input id="customer-name" name="customer-name" required type="text" />
           <label for="customer-contact">Customer Telephone:</label>
@@ -572,6 +578,7 @@
           <thead>
             <tr>
               <th>Order ID</th>
+              <th>Order Date</th>
               <th>Customer Name</th>
               <th>Contact</th>
               <th>Shipping Info</th>
