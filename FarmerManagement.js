@@ -40,6 +40,8 @@ class Purchase{
     }
 }
 
+const avgPriceOfBerry= localStorage.getItem("avgPriceOfBerry") ?? 0
+
 const purchasesJson=JSON.parse( localStorage.getItem("purchases")) ?? []
 const farmersJson= JSON.parse( localStorage.getItem("farmers")) ?? []
 // get farmers from local storage if exists or create empty array
@@ -289,7 +291,7 @@ function displayPurchaseLogs(){
         table.appendChild(row);
 
     })
-
+    calcAvgBerryPrice()
 }
 
 function isDateBetween(startDate, endDate, checkDate) {
@@ -417,7 +419,21 @@ const exportFarmersToCSV = () => {
     // export btn
 document.querySelector("#exportFarmerBtn").addEventListener("click", exportFarmersToCSV);
 
+function calcAvgBerryPrice(){
+    let totalPrice=0
+    let totalKg=0
+    purchases.forEach(purchase => {
+        totalPrice+=purchase.calcTotalCost()
+        totalKg+=Number.parseFloat(purchase.pAmount)
+    })
+    console.log(totalPrice,totalKg)
+    let avgPrice=totalPrice/totalKg
 
+    localStorage.setItem("avgPriceOfBerry",avgPrice)
+
+    avgPrice= avgPrice.toFixed(2)
+    document.getElementById("avgPriceOfBerry").textContent=avgPrice
+}
 
 
 // Initial display

@@ -7,8 +7,8 @@
     <link href="style.css" rel="stylesheet" />
     <script defer src="script.js"></script>
     <script defer src="FarmerManagement.js"></script>
-    <script defer src="Sales.js"></script>
     <script defer src="Product.js"></script>
+    <script defer src="Sales.js"></script>
   </head>
   <body>
     <header>
@@ -32,6 +32,7 @@
     <main>
       <h3>Available non-categorized Blueberry Amount: <span id="nonCatAmount">js not loaded</span> kg</h3>
       <h3>Money <span id="money">(!! js not loaded i guess !!)</span> $</h3>
+      <h3>avg price of berry : <span id="avgPriceOfBerry">js not loaded bruvvv</span></h3>
       <section id="farmer">
         <h2>Farmers Management</h2>
         <nav>
@@ -471,9 +472,9 @@
             required
             type="number"
           />
-          <label for="unit-price">Price per category:</label>
+<!--          <label for="unit-price">Price per category:</label>-->
 
-          <input id="unit-price" name="unit-price" required type="number" />
+<!--          <input id="unit-price" name="unit-price" required type="number" />-->
           <label for="order-status">Order Status:</label>
           <select id="order-status" name="order-status" required>
             <option value="pending">Pending</option>
@@ -587,6 +588,8 @@
               <th>Unit Price</th>
               <th>Total Price</th>
               <th>Status</th>
+              <th>Category Price per kg</th>
+              <th>Revenue</th>
             </tr>
           </thead>
           <tbody>

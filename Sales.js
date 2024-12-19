@@ -8,6 +8,17 @@ class Sale{
     constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate }) {
         Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate });
     }
+    pricePerKg(){
+        return inventory.find(cat => cat.cName===this.pCategory).pricePerKg()
+    }
+    categoryKG(){
+        return inventory.find(cat => cat.cName===this.pCategory).kg
+
+    }
+    calcRevenue(){
+        return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.categoryKG()).toFixed(5)
+    }
+
 }
 
 
@@ -30,14 +41,14 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     const customerShipping = document.getElementById('customer-shipping').value;
     const productCategory = document.getElementById('product-category').value;
     const quantityOrdered = parseFloat(document.getElementById('quantity-ordered').value);
-    const unitPrice = parseFloat(document.getElementById('unit-price').value);
+
+    const category=inventory.find(cat => cat.cName===productCategory)
+    const unitPrice = category.price
     const orderStatus = document.getElementById('order-status').value;
     const totalPrice = quantityOrdered * unitPrice;
 
     const saleDate=document.getElementById("order-date").value;
 
-    const category=inventory.find(cat => cat.cName===productCategory)
-    console.log(category)
     if(quantityOrdered > category.amount){
         alert("There is not enough product in the inventory..")
         return
@@ -68,31 +79,22 @@ document.getElementById('order-form').addEventListener('submit', function(event)
 
 });
 
+
+
 function renderSalesTable(table,sale) {
-
+    console.log("price avg:"+avgPriceOfBerry)
+    console.log(sale.pricePerKg())
     const newRow = table.insertRow();
+    const cellValues = [
+        sale.sID, sale.sDate, sale.cName, sale.cContact,
+        sale.cShipping, sale.pCategory, sale.pQuantity,
+        sale.pPrice, sale.pPrice * sale.pQuantity, sale.sStatus, sale.pricePerKg(),sale.calcRevenue()
+    ];
 
-    const cell1 = newRow.insertCell(0);
-    const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2);
-    const cell4 = newRow.insertCell(3);
-    const cell5 = newRow.insertCell(4);
-    const cell6 = newRow.insertCell(5);
-    const cell7 = newRow.insertCell(6);
-    const cell8 = newRow.insertCell(7);
-    const cell9 = newRow.insertCell(8);
-    const cell10 = newRow.insertCell(9);
-
-    cell1.textContent = sale.sID;
-    cell2.textContent = sale.sDate;
-    cell3.textContent = sale.cName;
-    cell4.textContent = sale.cContact;
-    cell5.textContent = sale.cShipping;
-    cell6.textContent = sale.pCategory;
-    cell7.textContent = sale.pQuantity;
-    cell8.textContent = sale.pPrice;
-    cell9.textContent = sale.pPrice * sale.pQuantity;
-    cell10.textContent = sale.sStatus;
+    cellValues.forEach((value, index) => {
+        const cell = newRow.insertCell(index);
+        cell.textContent = value;
+    });
 
 }
 
@@ -149,31 +151,33 @@ function displaySalesTableByCustomer(){
 }
 
 function generateReport() {
-    const table = document.getElementById('orders-table').getElementsByTagName('tbody')[0];
-    const rows = table.getElementsByTagName('tr');
+
 
     let totalRevenue = 0;
     let salesByCategory = {};
+    let noOfSaleByCategory={}
 
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        const category = cells[4].textContent;
-        const totalPrice = parseFloat(cells[7].textContent);
-
-        totalRevenue += totalPrice;
-
-        if (!salesByCategory[category]) {
-            salesByCategory[category] = 0;
+    sales.forEach(sale =>{
+        const rev=Number.parseFloat(sale.calcRevenue())
+        totalRevenue+=rev
+        if (!salesByCategory[sale.pCategory]) {
+            salesByCategory[sale.pCategory] = 0;
         }
-        salesByCategory[category] += totalPrice;
-    }
+        if (!noOfSaleByCategory[sale.pCategory]) {
+            noOfSaleByCategory[sale.pCategory] = 0;
+        }
+
+        salesByCategory[sale.pCategory] +=rev
+        noOfSaleByCategory[sale.pCategory] +=1
+    })
 
     const reportContainer = document.getElementById('report-container');
     reportContainer.innerHTML = `
+        <h3>Total Sales: ${sales.length}</h3>
         <h3>Total Revenue: $${totalRevenue.toFixed(2)}</h3>
         <h4>Revenue by Category:</h4>
         <ul>
-            ${Object.keys(salesByCategory).map(category => `<li>${category}: $${salesByCategory[category].toFixed(2)}</li>`).join('')}
+            ${Object.keys(salesByCategory).map(category => `<li>${category}: Number Of Sales:${noOfSaleByCategory[category]} Revenue: $${salesByCategory[category].toFixed(2)}</li>`).join('')}
         </ul>
     `;
 }
@@ -216,3 +220,4 @@ document.querySelector("#editSaleForm").addEventListener("submit", e =>{
 })
 
 displaySalesTable()
+generateReport()

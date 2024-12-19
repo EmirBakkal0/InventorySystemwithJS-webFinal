@@ -7,6 +7,9 @@ class Category{
         this.cName=name
         this.lowStockAlert=alert
     }
+    pricePerKg(){
+        return this.price * 1/this.kg
+    }
 
 }
 const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:100}
@@ -67,7 +70,9 @@ const inventoryJSON=JSON.parse( localStorage.getItem("inventory")) ?? [
 
 const inventory=inventoryJSON.map((c) => new Category(c.kg,c.amount, c.price, c.cName,c.lowStockAlert))
 
-
+// function pricePerKg(categoryName){
+//     return inventory.find(cat => cat.cName===categoryName)
+// }
 
 function listCategoryPrices(){
     const table=document.querySelector("#categoryPriceTable tbody")
