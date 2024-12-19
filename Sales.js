@@ -9,7 +9,7 @@ class Sale{
         Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate });
     }
     pricePerKg(){
-        return inventory.find(cat => cat.cName===this.pCategory).pricePerKg()
+        return this.pPrice *1/this.categoryKG()
     }
     categoryKG(){
         return inventory.find(cat => cat.cName===this.pCategory).kg
