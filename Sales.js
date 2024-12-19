@@ -89,7 +89,7 @@ function renderSalesTable(table,sale) {
     const cellValues = [
         sale.sID, sale.sDate, sale.cName, sale.cContact,
         sale.cShipping, sale.pCategory, sale.pQuantity,
-        sale.pPrice, sale.pPrice * sale.pQuantity, sale.sStatus, sale.pricePerKg(),sale.calcRevenue()
+        sale.pPrice, sale.pPrice * sale.pQuantity, sale.sStatus, sale.pricePerKg(),sale.calcRevenue().toFixed(2)
     ];
 
     cellValues.forEach((value, index) => {

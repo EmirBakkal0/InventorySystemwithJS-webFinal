@@ -298,7 +298,7 @@
             <h3>Package products</h3>
             <label for="packageCategories">Choose category</label>
 
-            <select id="packageCategories" name="categories" onchange="handleCategory()">
+            <select id="packageCategories" name="categories" onchange="handleCategory()" required>
               <option value="Small">Small (100g)</option>
               <option value="Medium">Medium (250g)</option>
               <option value="Large">Large (500g)</option>
@@ -331,6 +331,7 @@
               name=""
               placeholder="Enter amount of berries to pack"
               type="number"
+              required
             />
             <button type="submit">Package it</button>
           </form>

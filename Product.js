@@ -96,6 +96,7 @@ function handleCategory(){
         const input=document.getElementById("premiumWeightInput")
         input.classList.remove("hidden")
         input.classList.add("visible")
+        document.querySelector("#premiumWeight").value=inventory.find(c => c.cName === "Premium").kg
 
     }
     else{
@@ -142,6 +143,16 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
         alert("You don't have enough berries to package that much..")
         return
     }
+    if (categoryName==="Premium"){
+        const kg=document.getElementById("premiumWeight").value
+        if (category.amount > 0 && category.kg !==kg){
+            alert("You already have product available, you need to sell those before changing the category kg..")
+            return;
+        }
+        category.kg=kg
+        alert("Premium Category Amount Set To: "+kg+" kgs")
+    }
+
     nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount)
     category.amount= Number.parseFloat(category.amount) +Number.parseFloat(amount)
 
