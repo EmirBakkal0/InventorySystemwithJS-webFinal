@@ -5,18 +5,14 @@ document.getElementById("money").innerHTML=money.amount
 
 
 class Sale{
-    constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate }) {
-        Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate });
+    constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate ,cKG }) {
+        Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate, cKG });
     }
     pricePerKg(){
-        return this.pPrice *1/this.categoryKG()
-    }
-    categoryKG(){
-        return inventory.find(cat => cat.cName===this.pCategory).kg
-
+        return this.pPrice *1/this.cKG
     }
     calcRevenue(){
-        return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.categoryKG()).toFixed(5)
+        return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.cKG).toFixed(5)
     }
 
 }
@@ -44,6 +40,10 @@ document.getElementById('order-form').addEventListener('submit', function(event)
 
     const category=inventory.find(cat => cat.cName===productCategory)
     const unitPrice = category.price
+    const categoryKG= category.kg
+
+
+
     const orderStatus = document.getElementById('order-status').value;
     const totalPrice = quantityOrdered * unitPrice;
 
@@ -63,7 +63,8 @@ document.getElementById('order-form').addEventListener('submit', function(event)
         pQuantity: quantityOrdered,
         pPrice: unitPrice,
         sStatus: orderStatus,
-        sDate: saleDate
+        sDate: saleDate,
+        cKG: categoryKG
     }
     sales.push(new Sale(sale))
     localStorage.setItem("sales",JSON.stringify(sales))
