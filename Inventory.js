@@ -31,5 +31,55 @@ function displayInventoryTable(){
         table.appendChild(row)
     })
 }
+const exportInventoryToCSV = () => {
+
+    if (inventory.length === 0) {
+        alert("There are no inventory to export!");
+        return;
+    }
+    // CSV headings
+    const headers = [
+        "ID:",
+        "Category",
+        "Stock Level",
+        "Total Kilos",
+        "Reorder Level",
+        "Restock Date",
+        "Storage Location ",
+        "Info"
+
+
+    ];
+
+    // CSV content
+    const csvContent = [
+        headers.join(","), // Başlık satırı
+        ...inventory.map((category,index) =>
+            [
+                index+1,
+                category.cName,
+                category.amount,
+                category.amount*category.kg,
+                category.lowStockAlert,
+                category.lastRestockingDate,
+                "Warehouse",
+                alertStock(category.amount,category.lowStockAlert)
+            ].join(",")
+        ),
+    ].join("\n");
+
+    // CSV create file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "inventory_data.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
 
 displayInventoryTable()

@@ -19,7 +19,10 @@ function showFinanceTable(){
     const table=document.querySelector("#financeTable tbody")
     const revenue=calcRevenue(moneyEarnedFromSales,moneySpentOnRawBerrys)
     const tax=calcTax(revenue)
+
     const row=document.createElement("tr")
+
+
     row.innerHTML=`
         <th> ${moneyEarnedFromSales} </th>
         <th> ${moneySpentOnRawBerrys} </th>
@@ -32,3 +35,44 @@ function showFinanceTable(){
 }
 
 showFinanceTable()
+
+
+const exportFinanceToCSV = () => {
+
+    if (sales.length === 0 || inventory.length === 0) {
+        alert("There are no sales to export!");
+        return;
+    }
+    const revenue=calcRevenue(moneyEarnedFromSales,moneySpentOnRawBerrys)
+    const tax=calcTax(revenue)
+
+    // CSV headings
+    const headers = [
+        "Money Earned from sales",
+        "Money Spent on Raw Blueberries",
+        "Revenue",
+        "Tax(%18) of revenue",
+        "Net Profit",
+
+
+    ];
+
+    // CSV content
+    const csvContent = [
+        headers.join(","), // Başlık satırı
+        [moneyEarnedFromSales,moneySpentOnRawBerrys,revenue,tax,(revenue-tax).toFixed(5)].join(",")
+        ,
+    ].join("\n");
+
+    // CSV create file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "financial_data.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};

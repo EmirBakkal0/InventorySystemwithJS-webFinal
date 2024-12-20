@@ -14,6 +14,9 @@ class Sale{
     calcRevenue(){
         return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.cKG)
     }
+    calcRevenueWithTax(){
+        return this.calcRevenue()*0.82
+    }
 
 }
 
@@ -68,7 +71,7 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     }
     sales.push(new Sale(sale))
     localStorage.setItem("sales",JSON.stringify(sales))
-    money.amount+= totalPrice
+    money.amount+= totalPrice * 0.82 /// %18 tax
     category.amount= Number.parseFloat(category.amount) - quantityOrdered ;
     localStorage.setItem("inventory",JSON.stringify(inventory))
     listInventoryTracking()
@@ -176,9 +179,12 @@ function generateReport() {
     reportContainer.innerHTML = `
         <h3>Total Sales: ${sales.length}</h3>
         <h3>Total Revenue: $${totalRevenue.toFixed(2)}</h3>
-        <h4>Revenue by Category:</h4>
+        <h3>Total Revenue with tax: $${totalRevenue.toFixed(2)*0.82}</h3>
+        <h2>Revenue by Category:</h2>
         <ul>
-            ${Object.keys(salesByCategory).map(category => `<li>${category}: Number Of Sales:${noOfSaleByCategory[category]} Revenue: $${salesByCategory[category].toFixed(2)}</li>`).join('')}
+            ${Object.keys(salesByCategory).map(category => `<li><b>${category}: </b>  Number Of Sales:${noOfSaleByCategory[category]}
+            Revenue: $${salesByCategory[category].toFixed(2)}
+            Revenue With Tax: $${(salesByCategory[category]*0.82).toFixed(2)}</li>`).join('')}
         </ul>
     `;
 }
