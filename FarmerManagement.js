@@ -426,7 +426,6 @@ function calcAvgBerryPrice(){
         totalPrice+=purchase.calcTotalCost()
         totalKg+=Number.parseFloat(purchase.pAmount)
     })
-    console.log(totalPrice,totalKg)
     let avgPrice=totalPrice/totalKg
     if (isNaN(avgPrice)){
         avgPrice=0

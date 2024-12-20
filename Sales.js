@@ -80,14 +80,13 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     localStorage.setItem("money",JSON.stringify(money))
 
     displaySalesTable()
+    generateReport()
 
 });
 
 
 
 function renderSalesTable(table,sale) {
-    console.log("price avg:"+avgPriceOfBerry)
-    console.log(sale.pricePerKg())
     const newRow = table.insertRow();
     const cellValues = [
         sale.sID, sale.sDate, sale.cName, sale.cContact,
@@ -153,14 +152,14 @@ function displaySalesTableByCustomer(){
 
 
 }
+let noOfSaleByCategory={}
 
 function generateReport() {
 
 
     let totalRevenue = 0;
     let salesByCategory = {};
-    let noOfSaleByCategory={}
-
+    noOfSaleByCategory={}
     sales.forEach(sale =>{
         const rev=Number.parseFloat(sale.calcRevenue())
         totalRevenue+=rev

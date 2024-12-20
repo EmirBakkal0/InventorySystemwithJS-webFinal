@@ -14,6 +14,7 @@ class Category{
 
 }
 const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:0,lowStockAlert:10}
+document.querySelector("#nonCatAmount2").innerHTML=nonCategorizedBerryAmount.total
 
 
 const inventoryJSON=JSON.parse( localStorage.getItem("inventory")) ?? [
@@ -171,6 +172,9 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
     listInventoryTracking()
     document.querySelector("#nonCatAmount").innerHTML=nonCategorizedBerryAmount.total
+    document.querySelector("#nonCatAmount2").innerHTML=nonCategorizedBerryAmount.total
+
+
     displayInventoryTable()
 
 })

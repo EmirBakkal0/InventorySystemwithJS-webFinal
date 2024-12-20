@@ -1,7 +1,10 @@
 function displayInventoryTable(){
+    if (purchases.length===0){
+        console.log("no purchases done yet.. So the table won't be rendered")
+        return
+    }
     const table=document.querySelector("#inventoryTrackingTable2 tbody")
     table.innerHTML=""
-    console.log(nonCategorizedBerryAmount)
     const firstRow=document.createElement("tr")
     firstRow.innerHTML=`
             <th>0</th>
@@ -50,10 +53,21 @@ const exportInventoryToCSV = () => {
 
 
     ];
-
+    const firstRow= [
+        0,
+        "Non Categorized",
+        nonCategorizedBerryAmount.total.toFixed(2),
+        nonCategorizedBerryAmount.total.toFixed(2) ,
+        nonCategorizedBerryAmount.lowStockAlert,
+        purchases[purchases.length-1].pDate,
+        "Warehouse",
+        "-",
+        alertStock(nonCategorizedBerryAmount.total,0),
+    ]
     // CSV content
     const csvContent = [
-        headers.join(","), // Başlık satırı
+        headers.join(","), // Header row
+        firstRow.join(","),
         ...inventory.map((category,index) =>
             [
                 index+1,

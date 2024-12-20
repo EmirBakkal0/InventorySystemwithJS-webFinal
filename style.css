@@ -29,10 +29,11 @@ nav div{
 
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Verdana, serif, serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #030712;
+    color:white;
 }
 
 header {
@@ -40,29 +41,22 @@ header {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    background-color: navy;
+    background-color: #001A6E;
     color: white;
     text-align: left;
     padding: 1rem 1rem;
 }
 
-.grid{
 
-}
-
-main {
-}
 
 section {
     display: none;
-    background: white;
-    border: 1px solid #ddd;
+    background:#1f2937;
+    color:white;
     border-radius: 5px;
     padding: 15px;
 
-
 }
-
 
 h2 {
     margin-top: 0;
@@ -75,23 +69,23 @@ form {
     gap: 10px;
 }
 
-
-
 input, button {
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
     border-radius: 5px;
+    color: black;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #009990;
     color: white;
     cursor: pointer;
+    border: 1px solid #01655e;
+
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #074799;
 }
 
 ul {
@@ -101,7 +95,8 @@ ul {
 
 li {
     padding: 10px;
-    background: #f4f4f4;
+    background: black;
+    color: white;
     margin-bottom: 5px;
     border-radius: 5px;
     display: flex;
@@ -127,4 +122,29 @@ tbody, th, td, thead{
     border-collapse: collapse;
     padding: 4px;
     /* Style the table elements */
+}
+
+caption{
+    padding: 5px;
+    font-size: 1.5rem;
+}
+
+thead {
+    background:#E1FFBB;
+    color:black;
+    font-style: italic;
+}
+
+@media (max-width: 550px) {
+   button{
+       font-size: 0.75rem;
+   }
+
+    body{
+        font-size: 0.9rem;
+    }
+    table{
+        font-size: 0.6rem;
+
+    }
 }

@@ -1,22 +1,19 @@
 
-let moneyEarnedFromSales=0
-let moneySpentOnRawBerrys=0
-sales.forEach(sale =>{
-    moneyEarnedFromSales+=(Number.parseFloat(sale.pPrice)*Number.parseFloat(sale.pQuantity))
-})
-
-purchases.forEach(p =>{
-    moneySpentOnRawBerrys+= p.calcTotalCost()
-})
-
 function calcRevenue(sales,spent){
     return sales-spent
 }
 const calcTax = money => money*0.18
 
-console.log(moneyEarnedFromSales)
-function showFinanceTable(){
-    const table=document.querySelector("#financeTable tbody")
+function showFinanceTable(tableid){
+    let moneyEarnedFromSales=0
+    let moneySpentOnRawBerrys=0
+    sales.forEach(sale =>{
+        moneyEarnedFromSales+=(Number.parseFloat(sale.pPrice)*Number.parseFloat(sale.pQuantity))
+    })
+    purchases.forEach(p =>{
+        moneySpentOnRawBerrys+= p.calcTotalCost()
+    })
+    const table=document.querySelector(tableid+" tbody")
     const revenue=calcRevenue(moneyEarnedFromSales,moneySpentOnRawBerrys)
     const tax=calcTax(revenue)
 
@@ -34,10 +31,18 @@ function showFinanceTable(){
 
 }
 
-showFinanceTable()
+showFinanceTable("#financeTable")
 
 
 const exportFinanceToCSV = () => {
+    let moneyEarnedFromSales=0
+    let moneySpentOnRawBerrys=0
+    sales.forEach(sale =>{
+        moneyEarnedFromSales+=(Number.parseFloat(sale.pPrice)*Number.parseFloat(sale.pQuantity))
+    })
+    purchases.forEach(p =>{
+        moneySpentOnRawBerrys+= p.calcTotalCost()
+    })
 
     if (sales.length === 0 || inventory.length === 0) {
         alert("There are no sales to export!");
