@@ -1,18 +1,19 @@
 
 class Category{
-    constructor(kilograms,amount,price,name,alert ) {
+    constructor(kilograms,amount,price,name,alert,lastRestockingDate ) {
         this.kg=kilograms
         this.amount=amount
         this.price=price
         this.cName=name
         this.lowStockAlert=alert
+        this.lastRestockingDate=lastRestockingDate
     }
     pricePerKg(){
         return this.price * 1/this.kg
     }
 
 }
-const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:100}
+const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:100,lowStockAlert:10}
 
 
 const inventoryJSON=JSON.parse( localStorage.getItem("inventory")) ?? [
@@ -21,54 +22,61 @@ const inventoryJSON=JSON.parse( localStorage.getItem("inventory")) ?? [
         "amount": 0,
         "price": 2,
         "cName": "Small",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 0.25,
         "amount": 0,
         "price": 4,
         "cName": "Medium",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 0.5,
         "amount": 0,
         "price": 8,
         "cName": "Large",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 1,
         "amount": 0,
         "price": 15,
         "cName": "Extra Large",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 2,
         "amount": 0,
         "price": 28,
         "cName": "Family Pack",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 5,
         "amount": 0,
         "price": 55,
         "cName": "Bulk Pack",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     },
     {
         "kg": 10,
         "amount": 0,
         "price": 105,
         "cName": "Premium",
-        "lowStockAlert":0
+        "lowStockAlert":0,
+        "lastRestockingDate":"Never"
     }
 ]
 
 
-const inventory=inventoryJSON.map((c) => new Category(c.kg,c.amount, c.price, c.cName,c.lowStockAlert))
+const inventory=inventoryJSON.map((c) => new Category(c.kg,c.amount, c.price, c.cName,c.lowStockAlert,c.lastRestockingDate))
 
 // function pricePerKg(categoryName){
 //     return inventory.find(cat => cat.cName===categoryName)
@@ -137,6 +145,8 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
     e.preventDefault()
     const categoryName= document.getElementById("packageCategories").value
     const amount=document.getElementById("packageBerryAmount").value
+    const dateOfPackage=document.querySelector("#packageDate").value
+    console.log(dateOfPackage)
 
     const category=inventory.find(cat => cat.cName===categoryName)
     if (Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount) < 0 ){
@@ -152,6 +162,7 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
         category.kg=kg
         alert("Premium Category Amount Set To: "+kg+" kgs")
     }
+    category.lastRestockingDate=dateOfPackage
 
     nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) - Number.parseFloat(category.kg) * Number.parseFloat(amount)
     category.amount= Number.parseFloat(category.amount) +Number.parseFloat(amount)
@@ -160,6 +171,7 @@ document.querySelector("#packageForm").addEventListener("submit",e =>{
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
     listInventoryTracking()
     document.querySelector("#nonCatAmount").innerHTML=nonCategorizedBerryAmount.total
+    displayInventoryTable()
 
 })
 
@@ -178,19 +190,31 @@ document.querySelector("#categoryPriceForm").addEventListener("submit", e =>{
 document.querySelector("#lowStockAlert").addEventListener("submit",e =>{
     e.preventDefault()
     const categoryName=document.querySelector("#categoriesForAlert").value
-    const category=inventory.find(cat => cat.cName===categoryName)
     const lowStockAmount=document.querySelector("#alertAmount").value
+    if (categoryName==="Non-Categorized"){
+        nonCategorizedBerryAmount.lowStockAlert=Number.parseFloat(lowStockAmount)
+        localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
+        displayInventoryTable()
+        return
+    }
+    const category=inventory.find(cat => cat.cName===categoryName)
     console.log(lowStockAmount)
     category.lowStockAlert=Number.parseFloat(lowStockAmount)
     console.log(category.lowStockAlert)
 
     localStorage.setItem("inventory",JSON.stringify(inventory))
 
+    displayInventoryTable()
     listInventoryTracking()
+
 })
 
 function handleAlertField(){
     const categoryName=document.getElementById("categoriesForAlert").value
+    if (categoryName==="Non-Categorized"){
+        document.getElementById("alertAmount").value=nonCategorizedBerryAmount.lowStockAlert
+        return
+    }
     const category=inventory.find(cat => cat.cName===categoryName)
 
     document.getElementById("alertAmount").value=category.lowStockAlert

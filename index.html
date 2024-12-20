@@ -9,6 +9,7 @@
     <script defer src="FarmerManagement.js"></script>
     <script defer src="Product.js"></script>
     <script defer src="Sales.js"></script>
+    <script src="Inventory.js" defer></script>
   </head>
   <body>
     <header>
@@ -322,7 +323,7 @@
             </div>
 
             <label for="packageDate">Enter date of packaging:</label>
-            <input type="date" name="" id="packageDate">
+            <input type="date" name="" id="packageDate" required>
 
             <label for="packageBerryAmount">Amount of berries to packet</label>
             <input
@@ -358,6 +359,7 @@
           <h3>Set alerts for categories</h3>
           <label for="categoriesForAlert"> Choose a category </label>
           <select id="categoriesForAlert" name="categories" onchange="handleAlertField()">
+            <option value="Non-Categorized">Non-Categorized</option>
             <option value="Small">Small (100g)</option>
             <option value="Medium">Medium (250g)</option>
             <option value="Large">Large (500g)</option>
@@ -374,49 +376,46 @@
         </form>
 
 
+        <table id="categoryPriceTable">
+          <caption>
+            Category Prices
+          </caption>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>cat 1</th>
+              <th>200$</th>
+            </tr>
+          </tbody>
+        </table>
 
+        <table id="inventoryTrackingTable">
+          <caption>
+            Inventory Tracking
+          </caption>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Stock Level</th>
+              <th>Total Kilos</th>
+              <th>Info</th>
+            </tr>
+          </thead>
 
-
-          <table id="categoryPriceTable">
-            <caption>
-              Category Prices
-            </caption>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>cat 1</th>
-                <th>200$</th>
-              </tr>
-            </tbody>
-          </table>
-
-          <table id="inventoryTrackingTable">
-            <caption>
-              Inventory Tracking
-            </caption>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Stock Level</th>
-                <th>Total Kilos</th>
-                <th>Info</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <th>Small</th>
-                <th>100</th>
-                <th>10</th>
-                <th>STOCKS ARE LOW!</th>
-              </tr>
-            </tbody>
-          </table>
+          <tbody>
+            <tr>
+              <th>Small</th>
+              <th>100</th>
+              <th>10</th>
+              <th>STOCKS ARE LOW!</th>
+            </tr>
+          </tbody>
+        </table>
 
       </section>
 
@@ -605,61 +604,45 @@
           </div>
         </div>
       </section>
-      <section id="finance"></section>
+      <section id="finance">
+
+
+      </section>
       <section id="inventory">
         <h2>Inventory Management</h2>
-        <form id="inventory-form">
-          <label for="item-id">Item ID:</label>
-          <input type="text" id="item-id" name="item-id" required />
-          <label for="category">Category:</label>
-          <input type="text" id="category" name="category" required />
-          <label for="quantity">Quantity Available:</label>
-          <input type="number" id="quantity" name="quantity" required />
-          <label for="reorder-level">Reorder Level:</label>
-          <input
-            type="number"
-            id="reorder-level"
-            name="reorder-level"
-            required
-          />
-          <label for="restock-date">Restock Date:</label>
-          <input type="date" id="restock-date" name="restock-date" />
-          <label for="storage-location">Storage Location:</label>
-          <input
-            type="text"
-            id="storage-location"
-            name="storage-location"
-            required
-          />
-          <button type="submit">Add Item</button>
-        </form>
-        <table id="inventory-table">
+
+        <table id="inventoryTrackingTable2">
+          <caption>
+            Inventory Tracking
+          </caption>
           <thead>
-            <tr>
-              <th>Item ID</th>
-              <th>Category</th>
-              <th>Quantity</th>
-              <th>Reorder Level</th>
-              <th>Restock Date</th>
-              <th>Storage Location</th>
-              <th>Actions</th>
-            </tr>
+          <tr>
+            <th>ID:</th>
+            <th>Category</th>
+            <th>Stock Level</th>
+            <th>Total Kilos</th>
+            <th>Reorder Level</th>
+            <th>Restock Date</th>
+            <th>Storage Location</th>
+            <th>Info</th>
+          </tr>
           </thead>
+
           <tbody>
-            <!-- Inventory items will go here -->
+          <tr>
+            <th>1</th>
+            <th>Small</th>
+            <th>100</th>
+            <th>10</th>
+            <th>5</th>
+            <th>2003-06-02</th>
+            <th>Warehouse</th>
+            <th>STOCKS ARE LOW!</th>
+          </tr>
           </tbody>
         </table>
-        <div id="alerts">
-          <h2>Alerts and Notifications</h2>
-          <div id="alerts-container"><!-- Alerts will be generated here --></div>
-        </div>
-        <div id="reportt">
-          <h2>Inventory Report</h2>
-          <div id="report-container"><!-- Reports will be generated here --></div>
-        </div>
-      </section>
 
-      <section id="report"></section>
+      </section>
     </main>
   </body>
 </html>
