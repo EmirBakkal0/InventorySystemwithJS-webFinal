@@ -428,6 +428,9 @@ function calcAvgBerryPrice(){
     })
     console.log(totalPrice,totalKg)
     let avgPrice=totalPrice/totalKg
+    if (isNaN(avgPrice)){
+        avgPrice=0
+    }
 
     localStorage.setItem("avgPriceOfBerry",avgPrice)
 

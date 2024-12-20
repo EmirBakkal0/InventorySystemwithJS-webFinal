@@ -12,7 +12,7 @@ class Sale{
         return this.pPrice *1/this.cKG
     }
     calcRevenue(){
-        return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.cKG).toFixed(5)
+        return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.cKG)
     }
 
 }
@@ -171,7 +171,7 @@ function generateReport() {
         salesByCategory[sale.pCategory] +=rev
         noOfSaleByCategory[sale.pCategory] +=1
     })
-
+    // localStorage.setItem("salesByCategory",JSON.stringify(salesByCategory))
     const reportContainer = document.getElementById('report-container');
     reportContainer.innerHTML = `
         <h3>Total Sales: ${sales.length}</h3>

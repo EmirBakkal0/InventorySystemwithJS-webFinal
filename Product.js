@@ -13,7 +13,7 @@ class Category{
     }
 
 }
-const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:100,lowStockAlert:10}
+const nonCategorizedBerryAmount=JSON.parse(localStorage.getItem("nonCategorizedBerryAmount")) ?? {total:0,lowStockAlert:10}
 
 
 const inventoryJSON=JSON.parse( localStorage.getItem("inventory")) ?? [
