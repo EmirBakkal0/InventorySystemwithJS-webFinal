@@ -256,11 +256,11 @@ document.querySelector("#product-form").addEventListener("submit",(e) =>{
     money.amount = Number.parseFloat(money.amount)-totalCost
     document.getElementById("money").innerHTML=money.amount
 
-    farmer.addPurchase(pID)
+    farmer.addPurchase(pID)///TODO: THIS DOESNT WORK FIX IT
     purchases.push(new Purchase(pID,pFarmerID,pDate,pAmount,pPricePerAmount))
 
     nonCategorizedBerryAmount.total= Number.parseFloat(nonCategorizedBerryAmount.total) + Number.parseFloat(pAmount)
-
+    localStorage.setItem("farmers",JSON.stringify(farmers))
     document.querySelector("#nonCatAmount").innerHTML=nonCategorizedBerryAmount.total
     localStorage.setItem("nonCategorizedBerryAmount",JSON.stringify(nonCategorizedBerryAmount))
     localStorage.setItem("money",JSON.stringify(money))

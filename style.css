@@ -135,6 +135,11 @@ thead {
     font-style: italic;
 }
 
+.graph{
+    max-width: 50svw;
+    background: ghostwhite;
+}
+
 @media (max-width: 550px) {
    button{
        font-size: 0.75rem;

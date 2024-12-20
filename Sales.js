@@ -106,7 +106,7 @@ function displaySalesTable(){
     table.innerHTML=""
     sales.forEach(sale => renderSalesTable(table,sale))
 
-    //generateReport();
+
 }
 
 function displaySalesTableByStatus(){
@@ -227,3 +227,36 @@ document.querySelector("#editSaleForm").addEventListener("submit", e =>{
 
 displaySalesTable()
 generateReport()
+
+
+
+const categories = [];
+const revenues = [];
+sales.forEach(sale => {
+    if (categories.includes(sale.pCategory)) {
+        revenues[categories.indexOf(sale.pCategory)] += sale.calcRevenue();
+    } else {
+        categories.push(sale.pCategory);
+        revenues.push(sale.calcRevenue());
+    }
+});
+const ctx = document.getElementById('salesChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'bar', // Change this to 'pie' for a pie chart
+    data: {
+        labels: categories,
+        datasets: [{
+            label: 'Revenue by Category',
+            data: revenues,
+            backgroundColor: 'rgba(129,8,23,0.84)',
+            borderColor: 'rgba(255,15,53,0.84)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true
+            }
+        }
+    }
+});

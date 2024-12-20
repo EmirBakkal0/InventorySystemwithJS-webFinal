@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>NavyBerry Management System</title>
     <link href="style.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="script.js"></script>
     <script defer src="FarmerManagement.js"></script>
     <script defer src="Product.js"></script>
@@ -12,6 +13,7 @@
     <script src="Inventory.js" defer></script>
     <script src="Finance.js" defer></script>
     <script src="Report.js" defer></script>
+
   </head>
   <body>
     <header>
@@ -582,6 +584,8 @@
           <input id="l-customer-name" name="customer-name" required type="text" onchange="displaySalesTableByCustomer() "/>
         </form>
 
+
+
         <div class="table-container">
 
           <table id="orders-table">
@@ -611,6 +615,10 @@
           <h2>Sales Report</h2>
           <div id="report-container">
             <!-- Sales report will be generated here -->
+          </div>
+          <div class="graph">
+            <canvas id="salesChart" width="400" height="200"></canvas>
+
           </div>
         </div>
       </section>

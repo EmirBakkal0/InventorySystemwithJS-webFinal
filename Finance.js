@@ -2,7 +2,7 @@
 function calcRevenue(sales,spent){
     return sales-spent
 }
-const calcTax = money => money*0.18
+const calcTax = money => money*0.18 //TODO: negatifken ayarla devlet bize geri vergi vermicek sonucta sjfhaes
 
 function showFinanceTable(tableid){
     let moneyEarnedFromSales=0
