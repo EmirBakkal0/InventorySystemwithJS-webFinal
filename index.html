@@ -445,7 +445,7 @@
           <label for="order-id">Order ID:</label>
           <input id="order-id" name="order-id" required type="number" />
           <label for="order-date">Enter date of sale:</label>
-          <input type="date" name="" id="order-date">
+          <input type="date" name="" id="order-date" required>
           <label for="customer-name">Customer Name:</label>
           <input id="customer-name" name="customer-name" required type="text" />
           <label for="customer-contact">Customer Telephone:</label>
@@ -603,6 +603,7 @@
                 <th>Status</th>
                 <th>Category Price per kg</th>
                 <th>Revenue</th>
+                <th>Profit</th>
               </tr>
             </thead>
             <tbody>
@@ -625,13 +626,23 @@
       <section id="finance">
         <h2>Financial Analysis</h2>
         <div class="table-container">
+
+          <form id="financeForm" >
+            <label for="start-date-fi">Start Date</label>
+            <input type="date" name="" id="start-date-fi" required onchange="showFinanceTable()">
+            <label for="end-date-fi">End Date</label>
+            <input type="date" name="" id="end-date-fi" required onchange="showFinanceTable()">
+            <button type="submit">Export report to csv</button>
+          </form>
+
           <table id="financeTable">
+            <caption></caption>
             <thead>
             <tr>
-              <th>Money Earned from Sales</th>
-              <th>Money Spent on Raw Blueberries</th>
-              <th>Revenue</th>
-              <th>Tax(%18) of revenue</th>
+              <th>Money Earned from Sales (Income) (Revenue)</th>
+              <th>Money Spent on Raw Blueberries (Expense)</th>
+              <th>Profit without Tax</th>
+              <th>Tax(%18) of income</th>
               <th>Net Profit</th>
 
             </tr>
@@ -642,7 +653,7 @@
 
           </table>
         </div>
-        <button onclick="exportFinanceToCSV()">Export to csv</button>
+<!--        <button onclick="exportFinanceToCSV()">Export to csv</button>-->
 
       </section>
       <section id="inventory">
@@ -687,9 +698,16 @@
 
       <section id="report">
          <h2>Report</h2>
-        <button id="exportReportBtn" >Export Report to CSV</button>
+        <form id="reportForm" >
+          <label for="start-date-r">Start Date</label>
+          <input type="date" name="" id="start-date-r" required onchange="displayCSVTable(createCSV())" >
+          <label for="end-date-r">End Date</label>
+          <input type="date" name="" id="end-date-r" required  onchange="displayCSVTable(createCSV())" >
+          <button type="submit">Export report to csv</button>
+        </form>
        <div class="table-container">
          <table id="csvTable">
+           <caption></caption>
            <thead></thead>
            <tbody></tbody>
          </table>

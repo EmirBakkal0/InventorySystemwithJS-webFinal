@@ -3,7 +3,6 @@ const money=JSON.parse( localStorage.getItem("money")) ?? {amount:10000}
 
 document.getElementById("money").innerHTML=money.amount
 
-
 class Sale{
     constructor({ sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate ,cKG }) {
         Object.assign(this, { sID, cName, cContact, cShipping, pCategory, pQuantity, pPrice, sStatus, sDate, cKG });
@@ -14,8 +13,13 @@ class Sale{
     calcRevenue(){
         return (this.pricePerKg()-avgPriceOfBerry) * (this.pQuantity*this.cKG)
     }
+///// revenue means profit ok there's been a misunderstanding
     calcRevenueWithTax(){
         return this.calcRevenue()*0.82
+    }
+
+    calcEarnedFromSales(){
+        return this.pricePerKg() * (this.pQuantity*this.cKG)
     }
 
 }
@@ -80,18 +84,16 @@ document.getElementById('order-form').addEventListener('submit', function(event)
     localStorage.setItem("money",JSON.stringify(money))
 
     displaySalesTable()
-    generateReport()
-
 });
 
-
+let salesChart;
 
 function renderSalesTable(table,sale) {
     const newRow = table.insertRow();
     const cellValues = [
         sale.sID, sale.sDate, sale.cName, sale.cContact,
         sale.cShipping, sale.pCategory, sale.pQuantity,
-        sale.pPrice, sale.pPrice * sale.pQuantity, sale.sStatus, sale.pricePerKg(),sale.calcRevenue().toFixed(2)
+        sale.pPrice, sale.pPrice * sale.pQuantity, sale.sStatus, sale.pricePerKg(),sale.calcEarnedFromSales().toFixed(2),sale.calcRevenue().toFixed(2)
     ];
 
     cellValues.forEach((value, index) => {
@@ -105,7 +107,8 @@ function displaySalesTable(){
     const table = document.querySelector("#orders-table tbody")
     table.innerHTML=""
     sales.forEach(sale => renderSalesTable(table,sale))
-
+    generateReport()
+    renderChart()
 
 }
 
@@ -156,12 +159,11 @@ let noOfSaleByCategory={}
 
 function generateReport() {
 
-
     let totalRevenue = 0;
     let salesByCategory = {};
     noOfSaleByCategory={}
     sales.forEach(sale =>{
-        const rev=Number.parseFloat(sale.calcRevenue())
+        const rev=Number.parseFloat(sale.calcEarnedFromSales())
         totalRevenue+=rev
         if (!salesByCategory[sale.pCategory]) {
             salesByCategory[sale.pCategory] = 0;
@@ -179,13 +181,15 @@ function generateReport() {
         <h3>Total Sales: ${sales.length}</h3>
         <h3>Total Revenue: $${totalRevenue.toFixed(2)}</h3>
         <h3>Total Revenue with tax: $${totalRevenue.toFixed(2)*0.82}</h3>
-        <h2>Revenue by Category:</h2>
+        <h2>Profit by Category:</h2>
         <ul>
             ${Object.keys(salesByCategory).map(category => `<li><b>${category}: </b>  Number Of Sales:${noOfSaleByCategory[category]}
             Revenue: $${salesByCategory[category].toFixed(2)}
             Revenue With Tax: $${(salesByCategory[category]*0.82).toFixed(2)}</li>`).join('')}
         </ul>
     `;
+    renderChart()
+
 }
 
 function handleEditField(){
@@ -226,37 +230,40 @@ document.querySelector("#editSaleForm").addEventListener("submit", e =>{
 })
 
 displaySalesTable()
-generateReport()
 
 
-
-const categories = [];
-const revenues = [];
-sales.forEach(sale => {
-    if (categories.includes(sale.pCategory)) {
-        revenues[categories.indexOf(sale.pCategory)] += sale.calcRevenue();
-    } else {
-        categories.push(sale.pCategory);
-        revenues.push(sale.calcRevenue());
+function renderChart(){
+    if (salesChart) {
+        salesChart.destroy();
     }
-});
-const ctx = document.getElementById('salesChart').getContext('2d');
-const chart = new Chart(ctx, {
-    type: 'bar', // Change this to 'pie' for a pie chart
-    data: {
-        labels: categories,
-        datasets: [{
-            label: 'Revenue by Category',
-            data: revenues,
-            backgroundColor: 'rgba(129,8,23,0.84)',
-            borderColor: 'rgba(255,15,53,0.84)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: { beginAtZero: true
+    const categories = [];
+    const revenues = [];
+    sales.forEach(sale => {
+        if (categories.includes(sale.pCategory)) {
+            revenues[categories.indexOf(sale.pCategory)] += sale.calcEarnedFromSales();
+        } else {
+            categories.push(sale.pCategory);
+            revenues.push(sale.calcEarnedFromSales());
+        }
+    });
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    salesChart = new Chart(ctx, {
+        type: 'bar', // Change this to 'pie' for a pie chart
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Revenue by Category',
+                data: revenues,
+                backgroundColor: 'rgba(129,8,23,0.84)',
+                borderColor: 'rgba(255,15,53,0.84)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true
+                }
             }
         }
-    }
-});
+    });
+}

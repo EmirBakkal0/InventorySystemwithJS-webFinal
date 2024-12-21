@@ -6,13 +6,22 @@ function createCSV() {
     if (inventory.length === 0 || sales.length === 0) {
         console.log("There are no data to export!");
         return;
+
     }
     let moneyEarnedFromSales=0
     let moneySpentOnRawBerrys=0
-    sales.forEach(sale =>{
+    const startDate=document.getElementById("start-date-r").value
+    const endDate=document.getElementById("end-date-r").value
+    document.querySelector("#csvTable caption").textContent=` Report ${startDate ? startDate : "..."} between ${endDate ? endDate : "..."}`
+
+
+    const filteredSales=sales.filter(sale => isDateBetween(startDate,endDate,sale.sDate))
+    const filteredPurchases=purchases.filter(p => isDateBetween(startDate,endDate,p.pDate))
+
+    filteredSales.forEach(sale =>{
         moneyEarnedFromSales+=(Number.parseFloat(sale.pPrice)*Number.parseFloat(sale.pQuantity))
     })
-    purchases.forEach(p =>{
+    filteredPurchases.forEach(p =>{
         moneySpentOnRawBerrys+= p.calcTotalCost()
     })
 
@@ -61,16 +70,16 @@ function createCSV() {
 
     // Financial CSV headings
     const financeHeaders = [
-        "Money Earned from Sales",
-        "Money Spent on Raw Blueberries",
-        "Revenue",
+        "Money Earned from Sales (income&revenue)",
+        "Money Spent on Raw Blueberries (expense)",
+        "Profit without tax",
         "Tax(%18) of Revenue",
         "Net Profit"
     ];
 
     // Calculations for financial data
-    const revenue = calcRevenue(moneyEarnedFromSales, moneySpentOnRawBerrys);
-    const tax = calcTax(revenue);
+    const revenue = calcProfit(moneyEarnedFromSales, moneySpentOnRawBerrys);
+    const tax = calcTax(moneyEarnedFromSales);
 
     // Financial CSV content
     const financeContent = [
@@ -78,13 +87,15 @@ function createCSV() {
         [moneyEarnedFromSales, moneySpentOnRawBerrys, revenue, tax, (revenue - tax).toFixed(5)].join(",")
     ].join("\n");
 
+    const date=`Report ${startDate} between  ${endDate}`
     // Combined CSV content
     const combinedCSVContent = [
+
+        "Financial Data", // Title for financial data section
+        financeContent,
         "Inventory Data", // Title for inventory data section
         inventoryContent,
-        "",
-        "Financial Data", // Title for financial data section
-        financeContent
+        date
     ].join("\n");
 
     return combinedCSVContent;
@@ -103,13 +114,14 @@ function downloadCSV(csv){
     // Trigger download
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "Report.csv");
+    const startDate=document.getElementById("start-date-r").value
+    const endDate=document.getElementById("end-date-r").value
+    link.setAttribute("download", "Report "+startDate+" "+endDate+".csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
-document.getElementById("exportReportBtn").addEventListener("click",() => downloadCSV(createCSV()))
 
 
 function displayCSVTable(csv) {
@@ -150,4 +162,7 @@ function displayCSVTable(csv) {
 
 }
 
-displayCSVTable(createCSV())
+document.getElementById("reportForm").addEventListener("submit",e =>{
+    e.preventDefault()
+    downloadCSV(createCSV())
+})
