@@ -181,7 +181,7 @@ function generateReport() {
         <h3>Total Sales: ${sales.length}</h3>
         <h3>Total Revenue: $${totalRevenue.toFixed(2)}</h3>
         <h3>Total Revenue with tax: $${totalRevenue.toFixed(2)*0.82}</h3>
-        <h2>Profit by Category:</h2>
+        <h2>Revenue by Category:</h2>
         <ul>
             ${Object.keys(salesByCategory).map(category => `<li><b>${category}: </b>  Number Of Sales:${noOfSaleByCategory[category]}
             Revenue: $${salesByCategory[category].toFixed(2)}
@@ -190,6 +190,64 @@ function generateReport() {
     `;
     renderChart()
 
+}
+
+function exportSalesToCSV() {
+    const salesByCategory = {};
+    const noOfSaleByCategory = {};
+    let totalRevenue = 0;
+
+    sales.forEach(sale => {
+        const rev = Number.parseFloat(sale.calcEarnedFromSales());
+        totalRevenue += rev;
+
+        if (!salesByCategory[sale.pCategory]) {
+            salesByCategory[sale.pCategory] = 0;
+        }
+        if (!noOfSaleByCategory[sale.pCategory]) {
+            noOfSaleByCategory[sale.pCategory] = 0;
+        }
+
+        salesByCategory[sale.pCategory] += rev;
+        noOfSaleByCategory[sale.pCategory] += 1;
+    });
+
+    const total=[
+
+        "Total  Sales:"+ sales.length,
+    "Total Revenue: $"+ totalRevenue.toFixed(2),
+    "Total Revenue with tax:"+ (totalRevenue.toFixed(2)*0.82),
+    ]
+
+    // CSV headers
+    const headers = [
+        "Category", "Number Of Sales", "Revenue", "Revenue With Tax"
+    ];
+
+    // CSV content
+    const csvContent = [
+        total.join(","),
+        headers.join(","), // Header row
+        ...Object.keys(salesByCategory).map(category =>
+            [
+                category, noOfSaleByCategory[category],
+                salesByCategory[category].toFixed(2),
+                (salesByCategory[category] * 0.82).toFixed(2)
+            ].join(",")
+        )
+    ].join("\n");
+
+    // Create CSV file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "sales_report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 function handleEditField(){
@@ -267,3 +325,4 @@ function renderChart(){
         }
     });
 }
+
