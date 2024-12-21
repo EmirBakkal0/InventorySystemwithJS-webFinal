@@ -438,10 +438,20 @@
           <button onclick="show('listByStatus')">List Sales by status</button>
           <button onclick="show('listByCategory')">List Sales by category</button>
           <button onclick="show('listByCustomer')">List Sales by Customer</button>
-          <button onclick="exportSalesToCSV()">Export sales to csv</button>
+          <button onclick="show('exportSaleForm')">List sales by date or export to csv</button>
 
 
         </nav>
+
+        <form id="exportSaleForm">
+          <label for="start-date-s">Start Date</label>
+          <input type="date" name="" id="start-date-s" required onchange="displaySalesTableByDate()" >
+          <label for="end-date-r">End Date</label>
+          <input type="date" name="" id="end-date-s" required onchange="displaySalesTableByDate()"  >
+          <button type="submit">Export report to csv</button>
+        </form>
+
+
         <form id="order-form">
           <h3>Sell product to Customers</h3>
           <label for="order-id">Order ID:</label>

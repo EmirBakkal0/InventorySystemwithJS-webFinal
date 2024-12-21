@@ -112,6 +112,17 @@ function displaySalesTable(){
 
 }
 
+
+function displaySalesTableByDate(){
+    const table = document.querySelector("#orders-table tbody")
+    table.innerHTML=""
+    const startDate=document.getElementById("start-date-s").value
+    const endDate=document.getElementById("end-date-s").value
+    const filteredSales=sales.filter(sale => isDateBetween(startDate,endDate,sale.sDate))
+    filteredSales.forEach(sale => renderSalesTable(table,sale))
+    generateReport()
+}
+
 function displaySalesTableByStatus(){
     const status=document.getElementById("l-order-status").value
 
@@ -162,7 +173,16 @@ function generateReport() {
     let totalRevenue = 0;
     let salesByCategory = {};
     noOfSaleByCategory={}
-    sales.forEach(sale =>{
+    let filteredSales=sales
+
+    const startDate=document.getElementById("start-date-s").value
+    const endDate=document.getElementById("end-date-s").value
+    if (!(startDate==="" && endDate==="")){
+        filteredSales=sales.filter(sale => isDateBetween(startDate,endDate,sale.sDate))
+    }
+
+
+    filteredSales.forEach(sale =>{
         const rev=Number.parseFloat(sale.calcEarnedFromSales())
         totalRevenue+=rev
         if (!salesByCategory[sale.pCategory]) {
@@ -178,7 +198,7 @@ function generateReport() {
     // localStorage.setItem("salesByCategory",JSON.stringify(salesByCategory))
     const reportContainer = document.getElementById('report-container');
     reportContainer.innerHTML = `
-        <h3>Total Sales: ${sales.length}</h3>
+        <h3>Total Sales: ${filteredSales.length}</h3>
         <h3>Total Revenue: $${totalRevenue.toFixed(2)}</h3>
         <h3>Total Revenue with tax: $${totalRevenue.toFixed(2)*0.82}</h3>
         <h2>Revenue by Category:</h2>
@@ -191,13 +211,18 @@ function generateReport() {
     renderChart()
 
 }
-
+document.getElementById("exportSaleForm").addEventListener("submit", e =>{
+    e.preventDefault()
+    exportSalesToCSV()
+})
 function exportSalesToCSV() {
     const salesByCategory = {};
     const noOfSaleByCategory = {};
     let totalRevenue = 0;
-
-    sales.forEach(sale => {
+    const startDate=document.getElementById("start-date-s").value
+    const endDate=document.getElementById("end-date-s").value
+    const filteredSales=sales.filter(sale => isDateBetween(startDate,endDate,sale.sDate))
+    filteredSales.forEach(sale => {
         const rev = Number.parseFloat(sale.calcEarnedFromSales());
         totalRevenue += rev;
 
